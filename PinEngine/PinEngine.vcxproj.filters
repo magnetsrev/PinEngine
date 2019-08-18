@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\PinEngine">
+      <UniqueIdentifier>{c2fa84fc-519b-4511-bb29-3567d635c6b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PinEngine">
+      <UniqueIdentifier>{347d30cb-5dcc-46a6-b5c9-e840679d7f56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\PinEngine\Common">
+      <UniqueIdentifier>{c6a8fe69-c727-4bc2-ba46-d5c37b2c0f4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\PinEngine\Core">
+      <UniqueIdentifier>{27202b9f-6ca6-4334-ac88-32b0d261677a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PinEngine\Common">
+      <UniqueIdentifier>{dfd11f3b-9cbc-4773-aa68-48f6cc8bc23a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PinEngine\Core">
+      <UniqueIdentifier>{9712d995-fbcf-4874-b20c-18b1d3ae7e3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\PinEngine\Core\Input">
+      <UniqueIdentifier>{d5a45f0f-7bb7-489a-9bcd-80afa2ebcf32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PinEngine\Core\Input">
+      <UniqueIdentifier>{968b373c-52ab-4de1-a1a7-fad17de66ab6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\PinEngine\Utility">
+      <UniqueIdentifier>{3571f5fb-3baf-4568-b984-b6c3776881d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PinEngine\Utility">
+      <UniqueIdentifier>{f79de844-61cd-4722-8601-5ae7a9e1eda7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\PinEngine\Core\Graphics">
+      <UniqueIdentifier>{251bab1d-6460-4502-9aaa-2392b68b7e08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PinEngine\Core\Graphics">
+      <UniqueIdentifier>{eec7c43b-832f-476f-a6ee-98ed7bfe7f8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\PinEngine\Core\Graphics\Generators">
+      <UniqueIdentifier>{25d54113-4b79-41da-94e6-54fc7b014bee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PinEngine\Core\Graphics\Generators">
+      <UniqueIdentifier>{1f7f722e-c0e3-4b2a-9cf9-ab5d73fcd840}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PinEngine\Core\Input\Keyboard.cpp">
+      <Filter>Source Files\PinEngine\Core\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="PinEngine\Core\Input\KeyboardEvent.cpp">
+      <Filter>Source Files\PinEngine\Core\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="PinEngine\Common\ErrorLogger.cpp">
+      <Filter>Source Files\PinEngine\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="PinEngine\Core\Input\MouseEvent.cpp">
+      <Filter>Source Files\PinEngine\Core\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="PinEngine\Core\Input\Mouse.cpp">
+      <Filter>Source Files\PinEngine\Core\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="PinEngine\Core\Window.cpp">
+      <Filter>Source Files\PinEngine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PinEngine\Core\Graphics\Renderer.cpp">
+      <Filter>Source Files\PinEngine\Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="PinEngine\Core\Graphics\Shaders.cpp">
+      <Filter>Source Files\PinEngine\Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="PinEngine\Core\Graphics\PipelineManager.cpp">
+      <Filter>Source Files\PinEngine\Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="PinEngine\Core\Graphics\Generators\PipelineStateGenerator.cpp">
+      <Filter>Source Files\PinEngine\Core\Graphics\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="PinEngine\Utility\BuildPath.cpp">
+      <Filter>Source Files\PinEngine\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="PinEngine\Core\EngineObject.cpp">
+      <Filter>Source Files\PinEngine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PinEngine\Core\Graphics\RenderableEngineObject2D.cpp">
+      <Filter>Source Files\PinEngine\Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="PinEngine\Core\Graphics\ResourceManager.cpp">
+      <Filter>Source Files\PinEngine\Core\Graphics</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="PinEngine\Core\Input\Keyboard.h">
+      <Filter>Header Files\PinEngine\Core\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Core\Input\KeyboardEvent.h">
+      <Filter>Header Files\PinEngine\Core\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Core\Input\Core.h">
+      <Filter>Header Files\PinEngine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Common\ErrorLogger.h">
+      <Filter>Header Files\PinEngine\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Common\COMException.h">
+      <Filter>Header Files\PinEngine\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Core\Input\Mouse.h">
+      <Filter>Header Files\PinEngine\Core\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\IncludeMe.h">
+      <Filter>Header Files\PinEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Core\Input\MouseEvent.h">
+      <Filter>Header Files\PinEngine\Core\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Core\Window.h">
+      <Filter>Header Files\PinEngine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Core\Graphics\Renderer.h">
+      <Filter>Header Files\PinEngine\Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Core\Graphics\Shaders.h">
+      <Filter>Header Files\PinEngine\Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Utility\BuildPath.h">
+      <Filter>Header Files\PinEngine\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Core\Graphics\VertexBuffer.h">
+      <Filter>Header Files\PinEngine\Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Core\Graphics\PipelineManager.h">
+      <Filter>Header Files\PinEngine\Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Core\Graphics\PipelineState.h">
+      <Filter>Header Files\PinEngine\Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Core\Graphics\Generators\PipelineStateGenerator.h">
+      <Filter>Header Files\PinEngine\Core\Graphics\Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>Header Files\PinEngine\Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Core\EngineObject.h">
+      <Filter>Header Files\PinEngine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Core\Graphics\RenderableEngineObject2D.h">
+      <Filter>Header Files\PinEngine\Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Header Files\PinEngine\Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Core\Graphics\ResourceManager.h">
+      <Filter>Header Files\PinEngine\Core\Graphics</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shaders\ps.hlsl">
+      <Filter>Resource Files</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\vs.hlsl">
+      <Filter>Resource Files</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PinEngine\Core\Graphics\ResourceManager.inl">
+      <Filter>Header Files\PinEngine\Core\Graphics</Filter>
+    </None>
+  </ItemGroup>
+</Project>
