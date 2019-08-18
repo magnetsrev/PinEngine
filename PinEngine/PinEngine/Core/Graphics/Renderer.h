@@ -10,6 +10,7 @@
 #include "VertexBuffer.h"
 #include "PipelineManager.h"
 #include "Generators//PipelineStateGenerator.h"
+#include "Scene.h"
 
 namespace PinEngine
 {
@@ -40,7 +41,7 @@ namespace PinEngine
 		VertexBuffer<Vertex> test;
 		std::shared_ptr<Mouse> mouse;
 		std::shared_ptr<Keyboard> keyboard;
-
+		std::shared_ptr<Scene> currentScene = nullptr;
 		Window* parentWindow = nullptr;
 		HWND windowHandle = NULL;
 		int width = 0;

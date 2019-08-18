@@ -102,6 +102,9 @@
     <ClCompile Include="PinEngine\Core\Graphics\ResourceManager.cpp">
       <Filter>Source Files\PinEngine\Core\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="PinEngine\Core\Graphics\Scene.cpp">
+      <Filter>Source Files\PinEngine\Core\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PinEngine\Core\Input\Keyboard.h">
@@ -165,6 +168,9 @@
       <Filter>Header Files\PinEngine\Core\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="PinEngine\Core\Graphics\ResourceManager.h">
+      <Filter>Header Files\PinEngine\Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Core\Graphics\Scene.h">
       <Filter>Header Files\PinEngine\Core\Graphics</Filter>
     </ClInclude>
   </ItemGroup>

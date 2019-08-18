@@ -46,13 +46,4 @@ namespace PinEngine
 
 		return true;
 	}
-
-	std::shared_ptr<PipelineState> PipelineStateGenerator::DefaultPipelineState()
-	{
-		std::shared_ptr<PipelineState> defaultState = nullptr;
-		if (ResourceManager::GetResource(L"default", defaultState))
-			return defaultState;
-		ErrorLogger::Log(L"Failed to get pipeline state: default.");
-		return nullptr; //error occurred...
-	}
 }

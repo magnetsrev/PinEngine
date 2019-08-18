@@ -2,6 +2,7 @@
 #include "../Window.h"
 #include "..//..//Utility/BuildPath.h"
 #include "VertexBuffer.h"
+#include "ResourceManager.h"
 
 namespace PinEngine
 {
@@ -14,6 +15,16 @@ namespace PinEngine
 		width = window->width;
 
 		InitializeDirectX();
+
+		currentScene = std::make_shared<Scene>();
+		std::shared_ptr<RenderableEngineObject2D> obj1 = std::make_shared<RenderableEngineObject2D>();
+		/*std::shared_ptr<RenderableEngineObject2D> obj2 = std::make_shared<RenderableEngineObject2D>();
+		currentScene->AddObject(obj1);
+		currentScene->AddObject(obj2);
+		if (currentScene->HasObject(obj1))
+		{
+			currentScene->RemoveObject(obj1);
+		}*/
 
 		return false;
 	}
@@ -29,7 +40,6 @@ namespace PinEngine
 		deviceContext->ClearDepthStencilView(depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		PipelineManager::SetPipelineState(pipelineState);
-
 
 		UINT offsets = 0;
 		deviceContext->IASetVertexBuffers(0, 1, test.GetAddressOf(), test.StridePtr(), &offsets);
@@ -79,7 +89,6 @@ namespace PinEngine
 			COM_ERROR_IF_FAILED(hr, L"Failed to create device and swapchain.");
 
 			PipelineManager::RegisterContext(deviceContext);
-			pipelineStateGenerator.BuildPipelineStates(device);
 
 			Microsoft::WRL::ComPtr<ID3D11Texture2D> backBuffer;
 			hr = swapchain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(backBuffer.GetAddressOf()));
@@ -109,7 +118,8 @@ namespace PinEngine
 				return false;
 			}
 
-			pipelineState = pipelineStateGenerator.DefaultPipelineState();
+			if (!ResourceManager::GetResource(L"default", pipelineState))
+				return false;
 
 			std::vector<Vertex> data =
 			{

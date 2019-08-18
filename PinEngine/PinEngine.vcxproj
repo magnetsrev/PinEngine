@@ -159,6 +159,7 @@
     <ClCompile Include="PinEngine\Core\Window.cpp" />
     <ClCompile Include="PinEngine\Core\Graphics\Shaders.cpp" />
     <ClCompile Include="PinEngine\Core\Graphics\ResourceManager.cpp" />
+    <ClCompile Include="PinEngine\Core\Graphics\Scene.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +182,7 @@
     <ClInclude Include="PinEngine\Core\Graphics\Generators\PipelineStateGenerator.h" />
     <ClInclude Include="PinEngine\Core\Graphics\RenderableEngineObject2D.h" />
     <ClInclude Include="PinEngine\Core\Graphics\ResourceManager.h" />
+    <ClInclude Include="PinEngine\Core\Graphics\Scene.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Vertex.h" />
   </ItemGroup>
