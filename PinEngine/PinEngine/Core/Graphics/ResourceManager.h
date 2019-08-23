@@ -43,6 +43,8 @@ namespace PinEngine
 			#include "ResourceManager.inl"
 		#pragma endregion This region generates the declarations for the comptr/sharedptr map object functions GetResource and RegisterResource
 
+		static bool UnregisterResourceID3D11RenderTargetView(std::wstring id);
+
 	private:
 		static PipelineResourceMaps resourceMaps;
 	};

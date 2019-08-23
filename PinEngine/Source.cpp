@@ -9,7 +9,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 {
 
 	Window window;
-	WindowStyle style = (WindowStyle)(WindowStyle::ExitButton || WindowStyle::Resizable);
+	WindowStyle style = (WindowStyle)(WindowStyle::ExitButton | WindowStyle::Resizable);
 	if (window.Initialize(hInstance, L"Test Title", L"Test Class", 200, 150, -1, -1, style))
 	{
 		//window.SetWindowAlpha(0.5f);

@@ -30,10 +30,10 @@ namespace PinEngine
 		//void Render(RenderableEngineObject& obj);
 	private:
 		bool InitializeDirectX();
-		ComPtr<ID3D11Device> device;
-		ComPtr<ID3D11DeviceContext> deviceContext;
-		ComPtr<IDXGISwapChain> swapchain;
-		ComPtr<ID3D11RenderTargetView> renderTargetView;
+		ID3D11Device * device = nullptr;
+		ID3D11DeviceContext * deviceContext = nullptr;
+		IDXGISwapChain * swapchain = nullptr;
+		ID3D11RenderTargetView * renderTargetView;
 		ComPtr<ID3D11Texture2D> depthStencilBuffer;
 		ComPtr<ID3D11DepthStencilView> depthStencilView;
 		PipelineStateGenerator pipelineStateGenerator;
