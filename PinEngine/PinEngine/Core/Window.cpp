@@ -1,4 +1,5 @@
 #include "Window.h"
+#include "Graphics/ResourceManager.h"
 
 namespace PinEngine
 {
@@ -343,6 +344,43 @@ namespace PinEngine
 			}
 
 			return DefWindowProc(hwnd, uMsg, wParam, lParam); //Need to call DefWindowProc for WM_INPUT messages
+		}
+		case WM_SIZE:
+		{
+			INT width = LOWORD(lParam);
+			INT height = HIWORD(lParam);
+			Microsoft::WRL::ComPtr<ID3D11Device> device = PipelineManager::GetDevice();
+			Microsoft::WRL::ComPtr<ID3D11DeviceContext> deviceContext = PipelineManager::GetDeviceContext();
+			Microsoft::WRL::ComPtr<IDXGISwapChain> swapchain = PipelineManager::GetSwapchain();
+			Microsoft::WRL::ComPtr<ID3D11RenderTargetView> rtv = nullptr;
+			ResourceManager::GetResource(L"default", rtv);
+			if (device && deviceContext && swapchain && rtv)
+			{
+				deviceContext->OMSetRenderTargets(0, NULL, NULL);
+				auto refs = rtv.Reset();
+
+				HRESULT hr = swapchain->ResizeBuffers(0, width, height, DXGI_FORMAT_UNKNOWN, 0);
+				COM_ERROR_IF_FAILED(hr, L"Failed to resize buffers.");
+
+				ID3D11Texture2D* pBuffer = nullptr;
+				hr = swapchain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)& pBuffer);
+				COM_ERROR_IF_FAILED(hr, L"Failed to get buffer for swapchain.");
+
+				hr = device->CreateRenderTargetView(pBuffer, NULL, &rtv);
+				COM_ERROR_IF_FAILED(hr, L"Failed to recreate render target view on window resize.");
+
+				pBuffer->Release();
+
+				// Set up the viewport.
+				D3D11_VIEWPORT vp;
+				vp.Width = width;
+				vp.Height = height;
+				vp.MinDepth = 0.0f;
+				vp.MaxDepth = 1.0f;
+				vp.TopLeftX = 0;
+				vp.TopLeftY = 0;
+				deviceContext->RSSetViewports(1, &vp);
+			}
 		}
 		default:
 			return DefWindowProc(hwnd, uMsg, wParam, lParam);

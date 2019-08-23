@@ -18,13 +18,13 @@ namespace PinEngine
 
 		currentScene = std::make_shared<Scene>();
 		std::shared_ptr<RenderableEngineObject2D> obj1 = std::make_shared<RenderableEngineObject2D>();
-		/*std::shared_ptr<RenderableEngineObject2D> obj2 = std::make_shared<RenderableEngineObject2D>();
+		std::shared_ptr<RenderableEngineObject2D> obj2 = std::make_shared<RenderableEngineObject2D>();
 		currentScene->AddObject(obj1);
 		currentScene->AddObject(obj2);
 		if (currentScene->HasObject(obj1))
 		{
 			currentScene->RemoveObject(obj1);
-		}*/
+		}
 
 		return false;
 	}
@@ -88,7 +88,9 @@ namespace PinEngine
 
 			COM_ERROR_IF_FAILED(hr, L"Failed to create device and swapchain.");
 
+			PipelineManager::RegisterDevice(device);
 			PipelineManager::RegisterContext(deviceContext);
+			PipelineManager::RegisterSwapchain(swapchain);
 
 			Microsoft::WRL::ComPtr<ID3D11Texture2D> backBuffer;
 			hr = swapchain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(backBuffer.GetAddressOf()));
@@ -96,6 +98,8 @@ namespace PinEngine
 
 			hr = device->CreateRenderTargetView(backBuffer.Get(), NULL, &renderTargetView);
 			COM_ERROR_IF_FAILED(hr, L"Failed to create render target view.");
+
+			ResourceManager::RegisterResource(L"default", renderTargetView);
 
 			//Describe our Depth/Stencil Buffer
 			CD3D11_TEXTURE2D_DESC depthStencilTextureDesc(DXGI_FORMAT_D24_UNORM_S8_UINT, width, height);

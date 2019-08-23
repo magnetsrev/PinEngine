@@ -47,6 +47,11 @@ namespace PinEngine
 		PipelineManager::deviceContext = deviceContext;
 	}
 
+	void PipelineManager::RegisterSwapchain(Microsoft::WRL::ComPtr<IDXGISwapChain> swapchain)
+	{
+		PipelineManager::swapchain = swapchain;
+	}
+
 	Microsoft::WRL::ComPtr<ID3D11Device> PipelineManager::GetDevice()
 	{
 		return PipelineManager::device;
@@ -57,7 +62,13 @@ namespace PinEngine
 		return PipelineManager::deviceContext;
 	}
 
+	Microsoft::WRL::ComPtr<IDXGISwapChain> PipelineManager::GetSwapchain()
+	{
+		return PipelineManager::swapchain;
+	}
+
 	std::shared_ptr<PipelineState> PipelineManager::state = nullptr;
 	Microsoft::WRL::ComPtr<ID3D11Device> PipelineManager::device;
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> PipelineManager::deviceContext;
+	Microsoft::WRL::ComPtr<IDXGISwapChain> PipelineManager::swapchain;
 }
