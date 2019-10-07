@@ -37,6 +37,8 @@ namespace PinEngine
 		this->hInstance = hInstance;
 		this->width = width;
 		this->height = height;
+		PipelineManager::SetWidth(width);
+		PipelineManager::SetHeight(height);
 		this->window_title = window_title;
 		this->window_class = window_class; //wide string representation of class string (used for registering class and creating window)
 
@@ -187,8 +189,8 @@ namespace PinEngine
 
 	bool Window::SetWindowAlpha(float alpha)
 	{
-		alpha = max(0.0f, alpha);
-		alpha = min(1.0f, alpha);
+		alpha = std::max(0.0f, alpha);
+		alpha = std::min(1.0f, alpha);
 		BYTE alphaByte = 255 * alpha;
 		this->alpha = alphaByte;
 		alphaUsed = true;

@@ -11,6 +11,7 @@
 #include "PipelineManager.h"
 #include "Generators//PipelineStateGenerator.h"
 #include "Scene.h"
+#include "ConstantBuffer.h"
 
 namespace PinEngine
 {
@@ -30,18 +31,20 @@ namespace PinEngine
 		//void Render(RenderableEngineObject& obj);
 	private:
 		bool InitializeDirectX();
-		ID3D11Device * device = nullptr;
-		ID3D11DeviceContext * deviceContext = nullptr;
-		IDXGISwapChain * swapchain = nullptr;
-		ID3D11RenderTargetView * renderTargetView;
+		ComPtr<IDXGISwapChain> swapchain;
+		ComPtr<ID3D11Device> device;
+		ComPtr<ID3D11DeviceContext> deviceContext;
+
+		ComPtr<ID3D11RenderTargetView> renderTargetView;
 		ComPtr<ID3D11Texture2D> depthStencilBuffer;
 		ComPtr<ID3D11DepthStencilView> depthStencilView;
 		PipelineStateGenerator pipelineStateGenerator;
 		std::shared_ptr<PipelineState> pipelineState;
-		VertexBuffer<Vertex> test;
+		ConstantBuffer<DirectX::XMMATRIX> cb_wvp;
 		std::shared_ptr<Mouse> mouse;
 		std::shared_ptr<Keyboard> keyboard;
 		std::shared_ptr<Scene> currentScene = nullptr;
+		
 		Window* parentWindow = nullptr;
 		HWND windowHandle = NULL;
 		int width = 0;

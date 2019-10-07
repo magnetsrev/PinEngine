@@ -17,6 +17,7 @@ namespace PinEngine
 		}
 		std::string id = "";
 		Microsoft::WRL::ComPtr<ID3D11RasterizerState> rasterizerState = nullptr;
+		Microsoft::WRL::ComPtr<ID3D11SamplerState> samplerState = nullptr;
 		Microsoft::WRL::ComPtr<ID3D11DepthStencilState> depthStencilState = nullptr;
 		UINT stencilRef = 0;
 		std::shared_ptr<VertexShader> vertexShader = nullptr;

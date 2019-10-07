@@ -7,6 +7,10 @@
 #include "Shaders.h"
 #include <wrl/client.h>
 #include "PipelineState.h"
+#include "VertexBuffer.h"
+#include "Texture.h"
+#include "Vertex.h"
+#include <DirectXMath.h>
 
 namespace PinEngine
 {
@@ -43,7 +47,7 @@ namespace PinEngine
 			#include "ResourceManager.inl"
 		#pragma endregion This region generates the declarations for the comptr/sharedptr map object functions GetResource and RegisterResource
 
-		static bool UnregisterResourceID3D11RenderTargetView(std::wstring id);
+		//static bool UnregisterResourceID3D11RenderTargetView(std::wstring id);
 
 	private:
 		static PipelineResourceMaps resourceMaps;

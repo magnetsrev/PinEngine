@@ -1,15 +1,49 @@
 #pragma once
 #include "..//EngineObject.h"
 #include "VertexBuffer.h"
+#include "PipelineState.h"
+#include "AnchorPoint.h"
+#include "Texture.h"
+#include "Vertex.h"
+#include "../Input/Mouse.h"
+#include "../Event.h"
 
 namespace PinEngine
 {
 	class RenderableEngineObject2D : public EngineObject
 	{
+		friend class Renderer;
+		friend class Scene;
 	public:
-		bool Initialize();
+		bool Initialize(AnchorPoint elementAnchor = AnchorPoint::Uninitialized, std::shared_ptr<RenderableEngineObject2D> parent = nullptr, AnchorPoint parentAnchor = AnchorPoint::Uninitialized);
+		void AddChild(std::shared_ptr<RenderableEngineObject2D> child);
+		std::shared_ptr<Texture> GetTexture();
+		void AssignTexture(std::wstring path);
+		void SetDimensions(float width, float height);
+		bool HasChild(std::shared_ptr<RenderableEngineObject2D> child);
+		void ProcessMouseInteraction(MousePoint point);
+		/*void RegisterOnMouseOver(void (*fnc)(RenderableEngineObject2D*));
+		void RegisterOnMouseExit(void (*fnc)(RenderableEngineObject2D*));*/
+
+		/*void (*OnMouseOver)(RenderableEngineObject2D*) = nullptr;
+		void (*OnMouseExit)(RenderableEngineObject2D*) = nullptr;*/
+		Event<RenderableEngineObject2D> OnMouseOver;
+		Event<RenderableEngineObject2D> OnMouseExit;
+
 	private:
 		void UpdateMatrix() override;
-		VertexBuffer<DirectX::XMFLOAT3> v_positions;
+		std::shared_ptr<VertexBuffer<Vertex_2D_Texture>> v_positions;
+		std::shared_ptr<PipelineState> pipelineState;
+		DirectX::XMMATRIX worldMatrix = { 1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0 };
+		DirectX::XMMATRIX uiChildMatrix = { 1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0 };
+
+		AnchorPoint elementAnchor = AnchorPoint::TopLeft;
+		AnchorPoint parentAnchor = AnchorPoint::TopLeft;
+		DirectX::XMFLOAT3 offsetToParent = { 0, 0, 0 };
+		DirectX::XMFLOAT2 dimensions = { 1, 1 };
+		std::shared_ptr<Texture> texture = nullptr;
+		std::shared_ptr<RenderableEngineObject2D> parent = nullptr;
+		std::vector<std::shared_ptr<RenderableEngineObject2D>> children;
+		bool mouseOver = false;
 	};
 }

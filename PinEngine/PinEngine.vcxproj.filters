@@ -105,6 +105,15 @@
     <ClCompile Include="PinEngine\Core\Graphics\Scene.cpp">
       <Filter>Source Files\PinEngine\Core\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="PinEngine\Core\Graphics\Texture.cpp">
+      <Filter>Source Files\PinEngine\Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="PinEngine\Utility\StringHelper.cpp">
+      <Filter>Source Files\PinEngine\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="PinEngine\Core\Graphics\Color.cpp">
+      <Filter>Source Files\PinEngine\Core\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PinEngine\Core\Input\Keyboard.h">
@@ -155,16 +164,10 @@
     <ClInclude Include="PinEngine\Core\Graphics\Generators\PipelineStateGenerator.h">
       <Filter>Header Files\PinEngine\Core\Graphics\Generators</Filter>
     </ClInclude>
-    <ClInclude Include="Vertex.h">
-      <Filter>Header Files\PinEngine\Core\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="PinEngine\Core\EngineObject.h">
       <Filter>Header Files\PinEngine\Core</Filter>
     </ClInclude>
     <ClInclude Include="PinEngine\Core\Graphics\RenderableEngineObject2D.h">
-      <Filter>Header Files\PinEngine\Core\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
       <Filter>Header Files\PinEngine\Core\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="PinEngine\Core\Graphics\ResourceManager.h">
@@ -173,12 +176,42 @@
     <ClInclude Include="PinEngine\Core\Graphics\Scene.h">
       <Filter>Header Files\PinEngine\Core\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="PinEngine\Core\Graphics\ConstantBufferTypes.h">
+      <Filter>Header Files\PinEngine\Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Core\Graphics\ConstantBuffer.h">
+      <Filter>Header Files\PinEngine\Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Core\Graphics\AnchorPoint.h">
+      <Filter>Header Files\PinEngine\Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Core\Graphics\Texture.h">
+      <Filter>Header Files\PinEngine\Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Core\Graphics\Color.h">
+      <Filter>Header Files\PinEngine\Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Utility\StringHelper.h">
+      <Filter>Header Files\PinEngine\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Core\Graphics\Vertex.h">
+      <Filter>Header Files\PinEngine\Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Core\Event.h">
+      <Filter>Header Files\PinEngine\Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\ps.hlsl">
       <Filter>Resource Files</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\vs.hlsl">
+      <Filter>Resource Files</Filter>
+    </FxCompile>
+    <FxCompile Include="ps_2d.hlsl">
+      <Filter>Resource Files</Filter>
+    </FxCompile>
+    <FxCompile Include="vs_2d.hlsl">
       <Filter>Resource Files</Filter>
     </FxCompile>
   </ItemGroup>

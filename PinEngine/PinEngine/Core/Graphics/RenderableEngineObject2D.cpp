@@ -1,5 +1,6 @@
 #include "RenderableEngineObject2D.h"
 #include "PipelineManager.h"
+#include "ResourceManager.h"
 #include <vector>
 
 using namespace DirectX;
@@ -7,24 +8,234 @@ using namespace Microsoft::WRL;
 
 namespace PinEngine
 {
-	bool RenderableEngineObject2D::Initialize()
+	bool RenderableEngineObject2D::Initialize(AnchorPoint elementAnchor, std::shared_ptr<RenderableEngineObject2D> parent, AnchorPoint parentAnchor)
 	{
+		if (elementAnchor == AnchorPoint::Uninitialized)
+			elementAnchor = AnchorPoint::Center;
+		if (parentAnchor == AnchorPoint::Uninitialized)
+			parentAnchor = elementAnchor;
+		this->elementAnchor = elementAnchor;
+		this->parentAnchor = parentAnchor;
+		this->parent = parent;
+
 		ComPtr<ID3D11Device> device = PipelineManager::GetDevice();
 
-		std::vector<XMFLOAT3> positions
+		if (!ResourceManager::GetResource(L"vb_2d_d", v_positions))
 		{
-			{	-1.0f,	+1.0f, 0.0f	}, //Top Left
-			{	+1.0f,	+1.0f, 0.0f	}, //Top Right
-			{	+1.0f,	-1.0f, 0.0f	}, //Bottom Right
-			{	-1.0f,	-1.0f, 0.0f	}, //Bottom Left
-		};
-		COM_ERROR_IF_FAILED(v_positions.Initialize(device, positions), L"Failed to initialize position vertex buffer for renderable 2d engine object.");
+			v_positions = std::make_shared<VertexBuffer<Vertex_2D_Texture>>();
 
+			std::vector<Vertex_2D_Texture> vertices
+			{
+				Vertex_2D_Texture(-0.5f,	+0.5f, 1.0f, 0, 0), //Top Left
+				Vertex_2D_Texture(+0.5f,	+0.5f, 1.0f, 1, 0), //Top Right
+				Vertex_2D_Texture(+0.5f,	-0.5f, 1.0f, 1, 1), //Bottom Right
+				Vertex_2D_Texture(-0.5f,	+0.5f, 1.0f, 0, 0), //Top Left
+				Vertex_2D_Texture(+0.5f,	-0.5f, 1.0f, 1, 1), //Bottom Right
+				Vertex_2D_Texture(-0.5f,	-0.5f, 1.0f, 0, 1), //Bottom Left
+			};
+			COM_ERROR_IF_FAILED(v_positions->Initialize(device, vertices), L"Failed to initialize position vertex buffer for renderable 2d engine object.");
+			
+			ResourceManager::RegisterResource(L"vb_2d_d", v_positions);
+		}
+
+		if (!ResourceManager::GetResource(L"missingtexture", texture))
+		{
+			ErrorLogger::Log(L"Something went wrong. Missing texture not in resource manager.");
+			return false;
+		}
+
+		if (!ResourceManager::GetResource(L"default_2d", pipelineState))
+			return false;
+
+		UpdateMatrix();
 		return true;
+	}
+
+	void RenderableEngineObject2D::AddChild(std::shared_ptr<RenderableEngineObject2D> child)
+	{
+		children.push_back(child);
+	}
+
+	std::shared_ptr<Texture> RenderableEngineObject2D::GetTexture()
+	{
+		return texture;
+	}
+
+	void RenderableEngineObject2D::AssignTexture(std::wstring path)
+	{
+		if (!ResourceManager::GetResource(path, texture))
+		{
+			std::shared_ptr<Texture> newTexture = std::make_shared<Texture>(path);
+			if (newTexture->IsValid())
+			{
+				texture = newTexture;
+				ResourceManager::RegisterResource(path, newTexture);
+			}
+		}
+	}
+
+	void RenderableEngineObject2D::SetDimensions(float width, float height)
+	{
+		dimensions.x = width;
+		dimensions.y = height;
+		UpdateMatrix();
+	}
+
+	bool RenderableEngineObject2D::HasChild(std::shared_ptr<RenderableEngineObject2D> child)
+	{
+		for (auto& c : children)
+		{
+			if (c == child)
+				return true;
+		}
+		return false;
+	}
+
+	void RenderableEngineObject2D::ProcessMouseInteraction(MousePoint point)
+	{
+		if (OnMouseOver.callbacks.size()>0)
+		{
+			XMMATRIX inverse = XMMatrixInverse(nullptr, worldMatrix);
+			XMFLOAT2 mousePoint = { (float)point.x, (float)point.y };
+			XMVECTOR mouseVector = XMLoadFloat2(&mousePoint);
+			XMVECTOR transformedVec = XMVector2Transform(mouseVector, inverse);
+			XMFLOAT2 newMousePoint;
+			XMStoreFloat2(&newMousePoint, transformedVec);
+			if (abs(newMousePoint.x) < 0.5f && abs(newMousePoint.y) <= 0.5f)
+			{
+				mouseOver = true;
+				for (auto& fnc : OnMouseOver.callbacks)
+				{
+					fnc(this);
+				}
+			}
+			else
+			{
+				if (mouseOver)
+				{
+					mouseOver = false;
+					for (auto& fnc : OnMouseExit.callbacks)
+					{
+						fnc(this);
+					}
+				}
+			}
+		}
 	}
 
 	void RenderableEngineObject2D::UpdateMatrix()
 	{
+		float childXOffset(0), childYOffset(0);
+		float parentXOffset(0), parentYOffset(0);
 
+		if (parent == nullptr)
+		{
+			switch (parentAnchor)
+			{
+			case AnchorPoint::TopLeft:
+				parentXOffset = -PipelineManager::GetWidth() / 2;
+				parentYOffset = PipelineManager::GetHeight() / 2;
+				break;
+			case AnchorPoint::TopRight:
+				parentXOffset = PipelineManager::GetWidth() / 2;
+				parentYOffset = PipelineManager::GetHeight() / 2;
+				break;
+			case AnchorPoint::Center:
+
+				break;
+			case AnchorPoint::BottomLeft:
+				parentXOffset = -PipelineManager::GetWidth() / 2;
+				parentYOffset = -PipelineManager::GetHeight() / 2;
+				break;
+			case AnchorPoint::BottomRight:
+				parentXOffset = PipelineManager::GetWidth() / 2;
+				parentYOffset = -PipelineManager::GetHeight() / 2;
+				break;
+			}
+
+			switch (elementAnchor)
+			{
+			case AnchorPoint::TopLeft:
+				childXOffset = dimensions.x / 2;
+				childYOffset = -dimensions.y / 2;
+				break;
+			case AnchorPoint::TopRight:
+				childXOffset = -dimensions.x / 2;
+				childYOffset = -dimensions.y / 2;
+				break;
+			case AnchorPoint::Center:
+
+				break;
+			case AnchorPoint::BottomLeft:
+				childXOffset = dimensions.x / 2;
+				childYOffset = dimensions.y / 2;
+				break;
+			case AnchorPoint::BottomRight:
+				childXOffset = -dimensions.x / 2;
+				childYOffset = dimensions.y / 2;
+				break;
+			}
+
+			worldMatrix = XMMatrixScaling(dimensions.x * scale.x, dimensions.y * scale.y, scale.z) * XMMatrixTranslation(childXOffset, childYOffset, 0) * XMMatrixRotationRollPitchYaw(rot.x, rot.y, rot.z) * XMMatrixTranslation(parentXOffset + pos.x, parentYOffset + pos.y, pos.z);
+			uiChildMatrix = XMMatrixScaling(scale.x, scale.y, scale.z) * XMMatrixTranslation(childXOffset, childYOffset, 0) * XMMatrixRotationRollPitchYaw(rot.x, rot.y, rot.z) * XMMatrixTranslation(parentXOffset + pos.x, parentYOffset + pos.y, pos.z);
+
+		}
+		else
+		{
+			switch (parentAnchor)
+			{
+			case AnchorPoint::TopLeft:
+				parentXOffset = -parent->dimensions.x / 2;
+				parentYOffset = parent->dimensions.y / 2;
+				break;
+			case AnchorPoint::TopRight:
+				parentXOffset = parent->dimensions.x / 2;
+				parentYOffset = parent->dimensions.y / 2;
+				break;
+			case AnchorPoint::Center:
+
+				break;
+			case AnchorPoint::BottomLeft:
+				parentXOffset = -parent->dimensions.x / 2;
+				parentYOffset = -parent->dimensions.y / 2;
+				break;
+			case AnchorPoint::BottomRight:
+				parentXOffset = parent->dimensions.x / 2;
+				parentYOffset = -parent->dimensions.y / 2;
+				break;
+			}
+
+			switch (elementAnchor)
+			{
+			case AnchorPoint::TopLeft:
+				childXOffset = dimensions.x / 2;
+				childYOffset = -dimensions.y / 2;
+				break;
+			case AnchorPoint::TopRight:
+				childXOffset = -dimensions.x / 2;
+				childYOffset = -dimensions.y / 2;
+				break;
+			case AnchorPoint::Center:
+
+				break;
+			case AnchorPoint::BottomLeft:
+				childXOffset = dimensions.x / 2;
+				childYOffset = dimensions.y / 2;
+				break;
+			case AnchorPoint::BottomRight:
+				childXOffset = -dimensions.x / 2;
+				childYOffset = dimensions.y / 2;
+				break;
+			}
+
+			worldMatrix = XMMatrixScaling(dimensions.x * scale.x, dimensions.y * scale.y, scale.z) * XMMatrixTranslation(childXOffset, childYOffset, 0) * XMMatrixRotationRollPitchYaw(rot.x, rot.y, rot.z) * XMMatrixTranslation(parentXOffset + pos.x, parentYOffset + pos.y, pos.z) * parent->uiChildMatrix;
+			uiChildMatrix = XMMatrixScaling(scale.x, scale.y, scale.z) * XMMatrixTranslation(childXOffset, childYOffset, 0) * XMMatrixRotationRollPitchYaw(rot.x, rot.y, rot.z) * XMMatrixTranslation(parentXOffset + pos.x, parentYOffset + pos.y, pos.z) * parent->uiChildMatrix;
+
+		}
+
+		for (auto& child : children)
+		{
+			child->UpdateMatrix();
+		}
 	}
 }

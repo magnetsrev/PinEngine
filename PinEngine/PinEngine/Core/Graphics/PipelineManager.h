@@ -14,7 +14,13 @@ namespace PinEngine
 		static Microsoft::WRL::ComPtr<ID3D11Device> GetDevice();
 		static Microsoft::WRL::ComPtr<ID3D11DeviceContext> GetDeviceContext();
 		static Microsoft::WRL::ComPtr<IDXGISwapChain> GetSwapchain();
+		static int GetWidth();
+		static int GetHeight();
+		static void SetWidth(int width);
+		static void SetHeight(int height);
 	private:
+		static int width;
+		static int height;
 		static std::shared_ptr<PipelineState> state;
 		static Microsoft::WRL::ComPtr<ID3D11Device> device;
 		static Microsoft::WRL::ComPtr<ID3D11DeviceContext> deviceContext;

@@ -14,27 +14,52 @@ namespace PinEngine
 		height = window->height;
 		width = window->width;
 
-		InitializeDirectX();
+		if (!InitializeDirectX())
+			ErrorLogger::Log(L"An error occurred during DirectX initialization.");
+
+		std::shared_ptr<Texture> missingTexture = std::make_shared<Texture>(L"Data/Textures/missingtexture.png");
+		ResourceManager::RegisterResource(L"missingtexture", missingTexture);
 
 		currentScene = std::make_shared<Scene>();
 		std::shared_ptr<RenderableEngineObject2D> obj1 = std::make_shared<RenderableEngineObject2D>();
-		std::shared_ptr<RenderableEngineObject2D> obj2 = std::make_shared<RenderableEngineObject2D>();
-		currentScene->AddObject(obj1);
-		currentScene->AddObject(obj2);
-		if (currentScene->HasObject(obj1))
+		obj1->Initialize(AnchorPoint::Center, nullptr, AnchorPoint::Center);
+		obj1->SetDimensions(64, 64);
+
+		obj1->OnMouseOver += [](auto obj)
 		{
-			currentScene->RemoveObject(obj1);
-		}
+			obj->AdjustRotation(0, 0, 0.01f);
+		};
+
+		obj1->OnMouseOver += [](auto obj)
+		{
+			obj->AdjustPosition(0, 0.2, 0);
+		};
+
+		obj1->OnMouseExit += [](auto obj)
+		{
+			obj->SetRotation(0, 0, 0);
+			obj->SetPosition(0, 0);
+		};
+
+		currentScene->AddObject(obj1);
+
+		std::shared_ptr<RenderableEngineObject2D> obj2 = std::make_shared<RenderableEngineObject2D>();
+		obj2->Initialize(AnchorPoint::TopLeft, obj1, AnchorPoint::BottomLeft);
+		obj2->AssignTexture(L"Data/Textures/smile.png");
+		obj2->SetDimensions(32, 32);
+		currentScene->AddObject(obj2);
 
 		return false;
 	}
 
 	void Renderer::Resize(int width, int height)
 	{
+		PipelineManager::SetWidth(width);
+		PipelineManager::SetHeight(height);
 		if (device && deviceContext && swapchain)
 		{
 			deviceContext->OMSetRenderTargets(0, NULL, NULL);
-			ResourceManager::UnregisterResourceID3D11RenderTargetView(L"default"); //Releases/cleans up render target view
+			renderTargetView.Reset();
 
 			HRESULT hr;
 
@@ -45,14 +70,21 @@ namespace PinEngine
 			hr = swapchain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(backBuffer.GetAddressOf()));
 			COM_ERROR_IF_FAILED(hr, L"Failed to get buffer for swapchain.");
 
-			ComPtr<ID3D11RenderTargetView> rtv;
-			hr = device->CreateRenderTargetView(backBuffer.Get(), NULL, &rtv);
+			hr = device->CreateRenderTargetView(backBuffer.Get(), NULL, &renderTargetView);
 			COM_ERROR_IF_FAILED(hr, L"Failed to recreate render target view on window resize.");
 
-			ResourceManager::RegisterResource(L"default", rtv); //Registers/stores new render target view comptr for future access
-			renderTargetView = rtv.Get(); //assign render target view ptr access for renderer
+			//Describe our Depth/Stencil Buffer
+			CD3D11_TEXTURE2D_DESC depthStencilTextureDesc(DXGI_FORMAT_D24_UNORM_S8_UINT, width, height);
+			depthStencilTextureDesc.MipLevels = 1;
+			depthStencilTextureDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
 
-			deviceContext->OMSetRenderTargets(1, &renderTargetView, depthStencilView.Get());
+			hr = device->CreateTexture2D(&depthStencilTextureDesc, NULL, &depthStencilBuffer);
+			COM_ERROR_IF_FAILED(hr, L"Failed to create depth stencil buffer.");
+
+			hr = device->CreateDepthStencilView(depthStencilBuffer.Get(), NULL, &depthStencilView);
+			COM_ERROR_IF_FAILED(hr, L"Failed to create depth stencil view.");
+
+			deviceContext->OMSetRenderTargets(1, renderTargetView.GetAddressOf(), depthStencilView.Get());
 
 			// Set up the viewport.
 			CD3D11_VIEWPORT viewport(0.0f, 0.0f, static_cast<float>(width), static_cast<float>(height));
@@ -63,14 +95,29 @@ namespace PinEngine
 	void Renderer::RenderFrame()
 	{
 		float backgroundColor[] = { 0.0f, 0.0f, 0.0f, 0.0f };
-		deviceContext->ClearRenderTargetView(renderTargetView, backgroundColor);
+		deviceContext->ClearRenderTargetView(renderTargetView.Get(), backgroundColor);
 		deviceContext->ClearDepthStencilView(depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		PipelineManager::SetPipelineState(pipelineState);
 
-		UINT offsets = 0;
-		deviceContext->IASetVertexBuffers(0, 1, test.GetAddressOf(), test.StridePtr(), &offsets);
-		deviceContext->Draw(3, 0);
+		deviceContext->VSSetConstantBuffers(0, 1, cb_wvp.GetAddressOf());
+		MousePoint mousePoint = mouse->GetPos();
+		mousePoint.x -= PipelineManager::GetWidth() / 2.0f;
+		mousePoint.y -= PipelineManager::GetHeight() / 2.0f;
+		mousePoint.y = -mousePoint.y;
+		int cnt = 0;
+		for (auto & uiObject : currentScene->objects_2d)
+		{
+			uiObject->ProcessMouseInteraction(mousePoint);
+			cb_wvp.data = uiObject->worldMatrix * DirectX::XMMatrixOrthographicLH(width, height, 0.01, 100);
+			cb_wvp.ApplyChanges();
+
+			PipelineManager::SetPipelineState(uiObject->pipelineState);
+			deviceContext->PSSetShaderResources(0, 1, uiObject->GetTexture()->GetTextureResourceViewAddress());
+			UINT offsets = 0;
+			const auto& vBuffer = uiObject->v_positions;
+			deviceContext->IASetVertexBuffers(0, 1, vBuffer->GetAddressOf(), vBuffer->StridePtr(), &offsets);
+			deviceContext->Draw(vBuffer->VertexCount(), 0);
+		}
 
 		swapchain->Present(1, NULL);
 	}
@@ -98,47 +145,33 @@ namespace PinEngine
 			scd.Windowed = TRUE;
 			scd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 			scd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
-
-			ComPtr<IDXGISwapChain> swapchain_comptr;
-			ComPtr<ID3D11Device> device_comptr;
-			ComPtr<ID3D11DeviceContext> deviceContext_comptr;
-
-
+			
 			HRESULT hr;
 			hr = D3D11CreateDeviceAndSwapChain(nullptr, //IDXGI Adapter
 				D3D_DRIVER_TYPE_HARDWARE,
 				0, //FOR SOFTWARE DRIVER TYPE
-				0, //FLAGS FOR RUNTIME LAYERS
+				D3D11_CREATE_DEVICE_DEBUG, //FLAGS FOR RUNTIME LAYERS
 				nullptr, //FEATURE LEVELS ARRAY
 				0, //# OF FEATURE LEVELS IN ARRAY
 				D3D11_SDK_VERSION,
 				&scd, //Swapchain description
-				&swapchain_comptr, //Swapchain Address
-				&device_comptr, //Device Address
+				&swapchain, //Swapchain Address
+				&device, //Device Address
 				NULL, //Supported feature level
-				&deviceContext_comptr); //Device Context Address
+				&deviceContext); //Device Context Address
 
 			COM_ERROR_IF_FAILED(hr, L"Failed to create device and swapchain.");
 
-			PipelineManager::RegisterDevice(device_comptr);
-			PipelineManager::RegisterContext(deviceContext_comptr);
-			PipelineManager::RegisterSwapchain(swapchain_comptr);
-
-			device = device_comptr.Get();
-			deviceContext = deviceContext_comptr.Get();
-			swapchain = swapchain_comptr.Get();
+			PipelineManager::RegisterSwapchain(swapchain);
+			PipelineManager::RegisterDevice(device);
+			PipelineManager::RegisterContext(deviceContext);
 
 			ComPtr<ID3D11Texture2D> backBuffer;
 			hr = swapchain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(backBuffer.GetAddressOf()));
 			COM_ERROR_IF_FAILED(hr, L"GetBuffer failed.");
 
-			ComPtr<ID3D11RenderTargetView> renderTargetView_comptr;
-			hr = device->CreateRenderTargetView(backBuffer.Get(), NULL, &renderTargetView_comptr);
+			hr = device->CreateRenderTargetView(backBuffer.Get(), NULL, &renderTargetView);
 			COM_ERROR_IF_FAILED(hr, L"Failed to create render target view.");
-
-			ResourceManager::RegisterResource(L"default", renderTargetView_comptr);
-			renderTargetView = renderTargetView_comptr.Get();
-
 
 			//Describe our Depth/Stencil Buffer
 			CD3D11_TEXTURE2D_DESC depthStencilTextureDesc(DXGI_FORMAT_D24_UNORM_S8_UINT, width, height);
@@ -151,7 +184,7 @@ namespace PinEngine
 			hr = device->CreateDepthStencilView(depthStencilBuffer.Get(), NULL, &depthStencilView);
 			COM_ERROR_IF_FAILED(hr, L"Failed to create depth stencil view.");
 
-			deviceContext->OMSetRenderTargets(1, &renderTargetView, depthStencilView.Get());
+			deviceContext->OMSetRenderTargets(1, renderTargetView.GetAddressOf(), depthStencilView.Get());
 
 			CD3D11_VIEWPORT viewport(0.0f, 0.0f, static_cast<float>(width), static_cast<float>(height));
 			deviceContext->RSSetViewports(1, &viewport);
@@ -161,16 +194,10 @@ namespace PinEngine
 				return false;
 			}
 
-			if (!ResourceManager::GetResource(L"default", pipelineState))
-				return false;
+			COM_ERROR_IF_FAILED(cb_wvp.Initialize(device, deviceContext), L"Failed to initialize constant buffer");
 
-			std::vector<Vertex> data =
-			{
-				{-1.0f, -1.0f, 0.0f}, //bottomleft
-				{0.0f, 1.0f, 0.0f}, //topmid
-				{1.0f, -1.0f, 0.5f}, //bottomright
-			};
-			COM_ERROR_IF_FAILED(test.Initialize(device, data), L"Failed to initialize vertex buffer.");
+			if (!ResourceManager::GetResource(L"default_2d", pipelineState))
+				return false;
 
 		}
 		catch (COMException& ex)

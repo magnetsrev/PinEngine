@@ -6,10 +6,12 @@ namespace PinEngine
 {
 	class Scene
 	{
+		friend class Renderer;
 	public:
 		void AddObject(std::shared_ptr<RenderableEngineObject2D> object);
 		bool HasObject(std::shared_ptr<RenderableEngineObject2D> object);
 		void RemoveObject(std::shared_ptr<RenderableEngineObject2D> object);
+
 	private:
 		std::vector<std::shared_ptr<RenderableEngineObject2D>> objects_2d;
 

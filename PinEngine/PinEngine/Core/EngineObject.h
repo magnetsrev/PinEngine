@@ -13,7 +13,7 @@ namespace PinEngine
 
 		void SetPosition(const DirectX::XMVECTOR& pos);
 		void SetPosition(const DirectX::XMFLOAT3& pos);
-		void SetPosition(float x, float y, float z);
+		void SetPosition(float x, float y, float z = 0.0f);
 		void AdjustPosition(const DirectX::XMVECTOR& pos);
 		void AdjustPosition(const DirectX::XMFLOAT3& pos);
 		void AdjustPosition(float x, float y, float z);
@@ -27,11 +27,11 @@ namespace PinEngine
 	protected:
 		virtual void UpdateMatrix();
 
-		DirectX::XMVECTOR posVector;
-		DirectX::XMVECTOR rotVector;
-		DirectX::XMFLOAT3 pos;
-		DirectX::XMFLOAT3 rot;
+		DirectX::XMVECTOR posVector = { 0,0,0,0 };
+		DirectX::XMVECTOR rotVector = { 0,0,0,0 };
+		DirectX::XMFLOAT3 pos = { 0, 0, 0 };
+		DirectX::XMFLOAT3 rot = { 0, 0, 0 };
 
-		DirectX::XMFLOAT3 scale;
+		DirectX::XMFLOAT3 scale = { 1, 1, 1 };
 	};
 }

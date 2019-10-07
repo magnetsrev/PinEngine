@@ -10,6 +10,7 @@ namespace PinEngine
 			{
 				state = newstate;
 				deviceContext->RSSetState(newstate->rasterizerState.Get());
+				deviceContext->PSSetSamplers(0, 1, newstate->samplerState.GetAddressOf());
 				deviceContext->OMSetDepthStencilState(newstate->depthStencilState.Get(), newstate->stencilRef);
 				deviceContext->IASetInputLayout(newstate->vertexShader->GetInputLayout());
 				deviceContext->VSSetShader(newstate->vertexShader->GetShader(), nullptr, 0);
@@ -19,6 +20,10 @@ namespace PinEngine
 			if (state->rasterizerState != newstate->rasterizerState)
 			{
 				deviceContext->RSSetState(newstate->rasterizerState.Get());
+			}
+			if (state->samplerState != newstate->samplerState)
+			{
+				deviceContext->PSSetSamplers(0, 1, newstate->samplerState.GetAddressOf());
 			}
 			if (state->depthStencilState != newstate->depthStencilState)
 			{
@@ -67,8 +72,30 @@ namespace PinEngine
 		return PipelineManager::swapchain;
 	}
 
+	int PipelineManager::GetWidth()
+	{
+		return width;
+	}
+
+	int PipelineManager::GetHeight()
+	{
+		return height;
+	}
+
+	void PipelineManager::SetWidth(int width)
+	{
+		PipelineManager::width = width;
+	}
+
+	void PipelineManager::SetHeight(int height)
+	{
+		PipelineManager::height = height;
+	}
+
 	std::shared_ptr<PipelineState> PipelineManager::state = nullptr;
 	Microsoft::WRL::ComPtr<ID3D11Device> PipelineManager::device;
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> PipelineManager::deviceContext;
 	Microsoft::WRL::ComPtr<IDXGISwapChain> PipelineManager::swapchain;
+	int PipelineManager::width = 0;
+	int PipelineManager::height = 0;
 }
