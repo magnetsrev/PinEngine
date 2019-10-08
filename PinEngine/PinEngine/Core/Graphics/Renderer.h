@@ -29,6 +29,8 @@ namespace PinEngine
 		void Resize(int width, int height);
 		void RenderFrame();
 		//void Render(RenderableEngineObject& obj);
+		std::shared_ptr<Scene> GetActiveScene();
+		void SetActiveScene(std::shared_ptr<Scene> scene);
 	private:
 		bool InitializeDirectX();
 		ComPtr<IDXGISwapChain> swapchain;

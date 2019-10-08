@@ -1,6 +1,7 @@
 #include "RenderableEngineObject2D.h"
 #include "PipelineManager.h"
 #include "ResourceManager.h"
+#include "..//Input//InputManager.h"
 #include <vector>
 
 using namespace DirectX;
@@ -63,7 +64,12 @@ namespace PinEngine
 
 	void RenderableEngineObject2D::AssignTexture(std::wstring path)
 	{
-		if (!ResourceManager::GetResource(path, texture))
+		std::shared_ptr<Texture> temp;
+		if (ResourceManager::GetResource(path, temp)) //If found and exists
+		{
+			texture = temp;
+		}
+		else //If not found, try to generate
 		{
 			std::shared_ptr<Texture> newTexture = std::make_shared<Texture>(path);
 			if (newTexture->IsValid())
@@ -91,36 +97,75 @@ namespace PinEngine
 		return false;
 	}
 
-	void RenderableEngineObject2D::ProcessMouseInteraction(MousePoint point)
+	void RenderableEngineObject2D::ProcessMouseEvent(MouseEvent mouseEvent)
 	{
-		if (OnMouseOver.callbacks.size()>0)
+		if (!mouseInteractionEnabled)
+			return;
+
+		switch (mouseEvent.GetType())
 		{
+		case MouseEvent::Move:
+		{
+			MousePoint mousePoint = mouseEvent.GetPos();
+			mousePoint.x -= PipelineManager::GetWidth() / 2.0f;
+			mousePoint.y -= PipelineManager::GetHeight() / 2.0f;
+			mousePoint.y = -mousePoint.y;
 			XMMATRIX inverse = XMMatrixInverse(nullptr, worldMatrix);
-			XMFLOAT2 mousePoint = { (float)point.x, (float)point.y };
-			XMVECTOR mouseVector = XMLoadFloat2(&mousePoint);
+			XMFLOAT2 mousePointFloat2 = { (float)mousePoint.x, (float)mousePoint.y };
+			XMVECTOR mouseVector = XMLoadFloat2(&mousePointFloat2);
 			XMVECTOR transformedVec = XMVector2Transform(mouseVector, inverse);
 			XMFLOAT2 newMousePoint;
 			XMStoreFloat2(&newMousePoint, transformedVec);
 			if (abs(newMousePoint.x) < 0.5f && abs(newMousePoint.y) <= 0.5f)
 			{
-				mouseOver = true;
-				for (auto& fnc : OnMouseOver.callbacks)
+				if (!mouseOver)
 				{
-					fnc(this);
+					if (processedEventsPerFrame & EventHandlerType::OnMouseOver)
+						return;
+					processedEventsPerFrame |= EventHandlerType::OnMouseOver;
+
+					for (auto& fnc : OnMouseOver.callbacks)
+					{
+						fnc(this);
+					}
 				}
+				mouseOver = true;
 			}
 			else
 			{
 				if (mouseOver)
 				{
 					mouseOver = false;
+					if (processedEventsPerFrame & EventHandlerType::OnMouseExit)
+						return;
+					processedEventsPerFrame |= EventHandlerType::OnMouseExit;
 					for (auto& fnc : OnMouseExit.callbacks)
 					{
 						fnc(this);
 					}
 				}
 			}
+			break;
 		}
+		}
+	}
+
+	void RenderableEngineObject2D::OnUpdateTick()
+	{
+		for (auto& fnc : OnUpdate.callbacks)
+		{
+			fnc(this);
+		}
+	}
+
+	void RenderableEngineObject2D::ToggleMouseInteraction(bool isEnabled)
+	{
+		mouseInteractionEnabled = isEnabled;
+	}
+
+	bool RenderableEngineObject2D::IsMouseOver()
+	{
+		return mouseOver;
 	}
 
 	void RenderableEngineObject2D::UpdateMatrix()
@@ -236,6 +281,12 @@ namespace PinEngine
 		for (auto& child : children)
 		{
 			child->UpdateMatrix();
+		}
+
+		if (mouseInteractionEnabled)
+		{
+			MouseEvent mouseUpdate(MouseEvent::Move, InputManager::GetMouse()->GetPosX(), InputManager::GetMouse()->GetPosY());
+			ProcessMouseEvent(mouseUpdate);
 		}
 	}
 }

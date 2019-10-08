@@ -2,6 +2,12 @@
 #include <vector>
 namespace PinEngine
 {
+	enum EventHandlerType
+	{
+		OnUpdate = 1 << 0,
+		OnMouseOver = 1 << 1,
+		OnMouseExit = 1 << 2
+	};
 	template<class T>
 	class Event
 	{

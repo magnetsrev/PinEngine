@@ -20,34 +20,6 @@ namespace PinEngine
 		std::shared_ptr<Texture> missingTexture = std::make_shared<Texture>(L"Data/Textures/missingtexture.png");
 		ResourceManager::RegisterResource(L"missingtexture", missingTexture);
 
-		currentScene = std::make_shared<Scene>();
-		std::shared_ptr<RenderableEngineObject2D> obj1 = std::make_shared<RenderableEngineObject2D>();
-		obj1->Initialize(AnchorPoint::Center, nullptr, AnchorPoint::Center);
-		obj1->SetDimensions(64, 64);
-
-		obj1->OnMouseOver += [](auto obj)
-		{
-			obj->AdjustRotation(0, 0, 0.01f);
-		};
-
-		obj1->OnMouseOver += [](auto obj)
-		{
-			obj->AdjustPosition(0, 0.2, 0);
-		};
-
-		obj1->OnMouseExit += [](auto obj)
-		{
-			obj->SetRotation(0, 0, 0);
-			obj->SetPosition(0, 0);
-		};
-
-		currentScene->AddObject(obj1);
-
-		std::shared_ptr<RenderableEngineObject2D> obj2 = std::make_shared<RenderableEngineObject2D>();
-		obj2->Initialize(AnchorPoint::TopLeft, obj1, AnchorPoint::BottomLeft);
-		obj2->AssignTexture(L"Data/Textures/smile.png");
-		obj2->SetDimensions(32, 32);
-		currentScene->AddObject(obj2);
 
 		return false;
 	}
@@ -100,14 +72,13 @@ namespace PinEngine
 		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 		deviceContext->VSSetConstantBuffers(0, 1, cb_wvp.GetAddressOf());
-		MousePoint mousePoint = mouse->GetPos();
-		mousePoint.x -= PipelineManager::GetWidth() / 2.0f;
-		mousePoint.y -= PipelineManager::GetHeight() / 2.0f;
-		mousePoint.y = -mousePoint.y;
+		
+
 		int cnt = 0;
 		for (auto & uiObject : currentScene->objects_2d)
 		{
-			uiObject->ProcessMouseInteraction(mousePoint);
+			uiObject->processedEventsPerFrame = 0;
+			uiObject->OnUpdateTick();
 			cb_wvp.data = uiObject->worldMatrix * DirectX::XMMatrixOrthographicLH(width, height, 0.01, 100);
 			cb_wvp.ApplyChanges();
 
@@ -120,6 +91,16 @@ namespace PinEngine
 		}
 
 		swapchain->Present(1, NULL);
+	}
+
+	std::shared_ptr<Scene> Renderer::GetActiveScene()
+	{
+		return currentScene;
+	}
+
+	void Renderer::SetActiveScene(std::shared_ptr<Scene> scene)
+	{
+		currentScene = scene;
 	}
 
 	bool Renderer::InitializeDirectX()

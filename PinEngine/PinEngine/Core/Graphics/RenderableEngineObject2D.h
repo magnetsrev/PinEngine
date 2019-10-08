@@ -21,14 +21,13 @@ namespace PinEngine
 		void AssignTexture(std::wstring path);
 		void SetDimensions(float width, float height);
 		bool HasChild(std::shared_ptr<RenderableEngineObject2D> child);
-		void ProcessMouseInteraction(MousePoint point);
-		/*void RegisterOnMouseOver(void (*fnc)(RenderableEngineObject2D*));
-		void RegisterOnMouseExit(void (*fnc)(RenderableEngineObject2D*));*/
-
-		/*void (*OnMouseOver)(RenderableEngineObject2D*) = nullptr;
-		void (*OnMouseExit)(RenderableEngineObject2D*) = nullptr;*/
+		void ProcessMouseEvent(MouseEvent mouseEvent);
+		void OnUpdateTick();
+		void ToggleMouseInteraction(bool isEnabled);
+		bool IsMouseOver();
 		Event<RenderableEngineObject2D> OnMouseOver;
 		Event<RenderableEngineObject2D> OnMouseExit;
+		Event<RenderableEngineObject2D> OnUpdate;
 
 	private:
 		void UpdateMatrix() override;
@@ -45,5 +44,7 @@ namespace PinEngine
 		std::shared_ptr<RenderableEngineObject2D> parent = nullptr;
 		std::vector<std::shared_ptr<RenderableEngineObject2D>> children;
 		bool mouseOver = false;
+		bool mouseInteractionEnabled = false;
+		int processedEventsPerFrame = 0;
 	};
 }

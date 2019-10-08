@@ -38,4 +38,8 @@ namespace PinEngine
 			}
 		}
 	}
+	std::vector<std::shared_ptr<RenderableEngineObject2D>> Scene::Get2DObjects()
+	{
+		return objects_2d;
+	}
 }

@@ -1,4 +1,5 @@
 #include "PinEngine/IncludeMe.h"
+#include "PinEngine/Core/Graphics/Generators/SceneGenerator.h"
 
 using namespace PinEngine;
 
@@ -9,11 +10,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 {
 
 	Window window;
-	WindowStyle style = (WindowStyle)(WindowStyle::ExitButton | WindowStyle::Resizable);
+	WindowStyle style = (WindowStyle)(WindowStyle::ExitButton | WindowStyle::Resizable | WindowStyle::TransparencyAllowed);
 	if (window.Initialize(hInstance, L"Test Title", L"Test Class", 200, 150, -1, -1, style))
 	{
-		//window.SetWindowAlpha(0.5f);
-		//bool result = window.SetWindowColorKey(RGB(0, 0, 0));
+		//bool result = window.SetWindowColorKey(RGB(255, 255, 255));
+
+		window.renderer.SetActiveScene(SceneGenerator::GenerateTestScene());
+
 		while (window.ProcessMessages())
 		{
 			window.Frame();

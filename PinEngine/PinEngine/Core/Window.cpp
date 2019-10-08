@@ -1,12 +1,16 @@
 #include "Window.h"
 #include "Graphics/ResourceManager.h"
-
+#include "Input/InputManager.h"
+#include "Graphics/Generators/SceneGenerator.h"
 namespace PinEngine
 {
 	bool Window::Initialize(HINSTANCE hInstance, std::wstring window_title, std::wstring window_class, int width, int height, int startupX, int startupY, WindowStyle style)
 	{
-		keyboard = std::make_shared<Keyboard>();
 		mouse = std::make_shared<Mouse>();
+		InputManager::RegisterMouse(mouse);
+		keyboard = std::make_shared<Keyboard>();
+		InputManager::RegisterKeyboard(keyboard);
+
 		static bool raw_input_initialized = false;
 		if (raw_input_initialized == false)
 		{
@@ -140,7 +144,6 @@ namespace PinEngine
 		}
 
 		return true;
-
 	}
 
 	bool Window::ProcessMessages()
@@ -381,8 +384,16 @@ namespace PinEngine
 	{
 		while (!mouse->EventBufferIsEmpty())
 		{
-			MouseEvent event = mouse->ReadEvent();
-			if (event.GetType() == MouseEvent::LPress)
+			std::shared_ptr<Scene> scene = renderer.GetActiveScene();
+			MouseEvent mouseEvent = mouse->ReadEvent();
+			if (scene)
+			{
+				for (const auto& obj : scene->Get2DObjects())
+				{
+					obj->ProcessMouseEvent(mouseEvent);
+				}
+			}
+			if (mouseEvent.GetType() == MouseEvent::LPress)
 			{
 				OutputDebugString(L"LPRESS");
 			}

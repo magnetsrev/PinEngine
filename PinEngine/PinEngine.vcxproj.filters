@@ -114,6 +114,12 @@
     <ClCompile Include="PinEngine\Core\Graphics\Color.cpp">
       <Filter>Source Files\PinEngine\Core\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="PinEngine\Core\Input\InputManager.cpp">
+      <Filter>Source Files\PinEngine\Core\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="PinEngine\Core\Graphics\Generators\SceneGenerator.cpp">
+      <Filter>Source Files\PinEngine\Core\Graphics\Generators</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PinEngine\Core\Input\Keyboard.h">
@@ -199,6 +205,12 @@
     </ClInclude>
     <ClInclude Include="PinEngine\Core\Event.h">
       <Filter>Header Files\PinEngine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Core\Input\InputManager.h">
+      <Filter>Header Files\PinEngine\Core\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Core\Graphics\Generators\SceneGenerator.h">
+      <Filter>Header Files\PinEngine\Core\Graphics\Generators</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

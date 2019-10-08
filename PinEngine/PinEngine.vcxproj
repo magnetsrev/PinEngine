@@ -162,8 +162,10 @@
     <ClCompile Include="PinEngine\Core\Graphics\Color.cpp" />
     <ClCompile Include="PinEngine\Common\ErrorLogger.cpp" />
     <ClCompile Include="PinEngine\Core\EngineObject.cpp" />
+    <ClCompile Include="PinEngine\Core\Graphics\Generators\SceneGenerator.cpp" />
     <ClCompile Include="PinEngine\Core\Graphics\RenderableEngineObject2D.cpp" />
     <ClCompile Include="PinEngine\Core\Graphics\Texture.cpp" />
+    <ClCompile Include="PinEngine\Core\Input\InputManager.cpp" />
     <ClCompile Include="PinEngine\Utility\BuildPath.cpp" />
     <ClCompile Include="PinEngine\Core\Graphics\Generators\PipelineStateGenerator.cpp" />
     <ClCompile Include="PinEngine\Core\Graphics\PipelineManager.cpp" />
@@ -180,6 +182,7 @@
     <ClCompile Include="PinEngine\Utility\StringHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="PinEngine\Core\Input\InputManager.h" />
     <ClInclude Include="PinEngine\Core\Event.h" />
     <ClInclude Include="PinEngine\Core\Graphics\AnchorPoint.h" />
     <ClInclude Include="PinEngine\Core\Graphics\Color.h" />
@@ -208,6 +211,7 @@
     <ClInclude Include="PinEngine\Core\Graphics\Scene.h" />
     <ClInclude Include="PinEngine\Utility\StringHelper.h" />
     <ClInclude Include="PinEngine\Core\Graphics\Vertex.h" />
+    <ClInclude Include="PinEngine\Core\Graphics\Generators\SceneGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="ps_2d.hlsl">
