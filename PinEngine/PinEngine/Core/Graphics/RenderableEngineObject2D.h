@@ -25,10 +25,14 @@ namespace PinEngine
 		void OnUpdateTick();
 		void ToggleMouseInteraction(bool isEnabled);
 		bool IsMouseOver();
+		bool IsClicked();
+		void EnableDrag(bool isEnabled, float xSnap=0, float ySnap=0);
+
 		Event<RenderableEngineObject2D> OnMouseOver;
 		Event<RenderableEngineObject2D> OnMouseExit;
 		Event<RenderableEngineObject2D> OnUpdate;
-
+		Event<RenderableEngineObject2D> OnLeftClick;
+		Event<RenderableEngineObject2D> OnLeftRelease;
 	private:
 		void UpdateMatrix() override;
 		std::shared_ptr<VertexBuffer<Vertex_2D_Texture>> v_positions;
@@ -46,5 +50,10 @@ namespace PinEngine
 		bool mouseOver = false;
 		bool mouseInteractionEnabled = false;
 		int processedEventsPerFrame = 0;
+		bool isClicked = false;
+		bool isDragging = false;
+		bool isDragEnabled = false;
+		DirectX::XMFLOAT2 dragDifference = { 0, 0 };
+		DirectX::XMFLOAT2 dragSnapIncrement = { 0,0 };
 	};
 }

@@ -22,6 +22,7 @@ namespace PinEngine
 			WheelDown,
 			Move,
 			RAW_MOVE,
+			Refresh,
 			Invalid
 		};
 	private:

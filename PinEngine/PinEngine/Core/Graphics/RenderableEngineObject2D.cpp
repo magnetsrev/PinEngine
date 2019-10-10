@@ -77,6 +77,14 @@ namespace PinEngine
 				texture = newTexture;
 				ResourceManager::RegisterResource(path, newTexture);
 			}
+			else //If not valid, attempt to set to the default missingtexture
+			{
+				if (!ResourceManager::GetResource(L"missingtexture", texture))
+				{
+					ErrorLogger::Log(L"Something went wrong. Missing texture not in resource manager.");
+					return;
+				}
+			}
 		}
 	}
 
@@ -102,20 +110,78 @@ namespace PinEngine
 		if (!mouseInteractionEnabled)
 			return;
 
+		MousePoint mousePoint = mouseEvent.GetPos();
+		mousePoint.x -= PipelineManager::GetWidth() / 2.0f;
+		mousePoint.y -= PipelineManager::GetHeight() / 2.0f;
+		mousePoint.y = -mousePoint.y;
+		XMMATRIX inverse = XMMatrixInverse(nullptr, worldMatrix);
+		XMFLOAT2 mousePointFloat2 = { (float)mousePoint.x, (float)mousePoint.y };
+		XMVECTOR mouseVector = XMLoadFloat2(&mousePointFloat2);
+		XMVECTOR transformedVec = XMVector2Transform(mouseVector, inverse);
+		XMFLOAT2 newMousePoint;
+		XMStoreFloat2(&newMousePoint, transformedVec);
+
 		switch (mouseEvent.GetType())
 		{
+		case MouseEvent::LPress:
+		{
+			if (processedEventsPerFrame & EventHandlerType::OnLeftClick)
+				return;
+			if (abs(newMousePoint.x) < 0.5f && abs(newMousePoint.y) <= 0.5f)
+			{
+				processedEventsPerFrame |= EventHandlerType::OnLeftClick;
+				isClicked = true;
+				if (isDragEnabled)
+				{
+					dragDifference.x = this->pos.x - mouseEvent.GetPosX();
+					dragDifference.y = this->pos.y + mouseEvent.GetPosY();
+					isDragging = true;
+				}
+				for (auto& fnc : OnLeftClick.callbacks)
+				{
+					fnc(this);
+				}
+			}
+			break;
+		}
+		case MouseEvent::LRelease:
+		{
+			isDragging = false;
+			if (isClicked)
+			{
+				isClicked = false;
+				if (processedEventsPerFrame & EventHandlerType::OnLeftRelease)
+					return;
+				if (abs(newMousePoint.x) < 0.5f && abs(newMousePoint.y) <= 0.5f)
+				{
+					processedEventsPerFrame |= EventHandlerType::OnLeftRelease;
+					for (auto& fnc : OnLeftRelease.callbacks)
+					{
+						fnc(this);
+					}
+				}
+			}
+			break;
+		}
 		case MouseEvent::Move:
 		{
-			MousePoint mousePoint = mouseEvent.GetPos();
-			mousePoint.x -= PipelineManager::GetWidth() / 2.0f;
-			mousePoint.y -= PipelineManager::GetHeight() / 2.0f;
-			mousePoint.y = -mousePoint.y;
-			XMMATRIX inverse = XMMatrixInverse(nullptr, worldMatrix);
-			XMFLOAT2 mousePointFloat2 = { (float)mousePoint.x, (float)mousePoint.y };
-			XMVECTOR mouseVector = XMLoadFloat2(&mousePointFloat2);
-			XMVECTOR transformedVec = XMVector2Transform(mouseVector, inverse);
-			XMFLOAT2 newMousePoint;
-			XMStoreFloat2(&newMousePoint, transformedVec);
+			if (isDragging && EventHandlerType::OnMouseMove)
+			{
+				float newPosX = (float)mouseEvent.GetPosX() + this->dragDifference.x;
+				float newPosY = -(float)mouseEvent.GetPosY() + this->dragDifference.y;
+				if (dragSnapIncrement.x != 0)
+				{
+					newPosX = newPosX - fmod(newPosX,dragSnapIncrement.x);
+				}
+				if (dragSnapIncrement.y != 0)
+				{
+					newPosY = newPosY - fmod(newPosY,dragSnapIncrement.y);
+
+				}
+				SetPosition(newPosX, newPosY);
+				processedEventsPerFrame |= EventHandlerType::OnMouseMove;
+			}
+		case MouseEvent::Refresh:
 			if (abs(newMousePoint.x) < 0.5f && abs(newMousePoint.y) <= 0.5f)
 			{
 				if (!mouseOver)
@@ -123,7 +189,6 @@ namespace PinEngine
 					if (processedEventsPerFrame & EventHandlerType::OnMouseOver)
 						return;
 					processedEventsPerFrame |= EventHandlerType::OnMouseOver;
-
 					for (auto& fnc : OnMouseOver.callbacks)
 					{
 						fnc(this);
@@ -166,6 +231,20 @@ namespace PinEngine
 	bool RenderableEngineObject2D::IsMouseOver()
 	{
 		return mouseOver;
+	}
+
+	bool RenderableEngineObject2D::IsClicked()
+	{
+		return isClicked;
+	}
+
+	void RenderableEngineObject2D::EnableDrag(bool isEnabled, float xSnap, float ySnap)
+	{
+		isDragEnabled = isEnabled;
+		if (isEnabled)
+			ToggleMouseInteraction(true);
+		dragSnapIncrement.x = xSnap;
+		dragSnapIncrement.y = ySnap;
 	}
 
 	void RenderableEngineObject2D::UpdateMatrix()
@@ -285,7 +364,7 @@ namespace PinEngine
 
 		if (mouseInteractionEnabled)
 		{
-			MouseEvent mouseUpdate(MouseEvent::Move, InputManager::GetMouse()->GetPosX(), InputManager::GetMouse()->GetPosY());
+			MouseEvent mouseUpdate(MouseEvent::Refresh, InputManager::GetMouse()->GetPosX(), InputManager::GetMouse()->GetPosY());
 			ProcessMouseEvent(mouseUpdate);
 		}
 	}
