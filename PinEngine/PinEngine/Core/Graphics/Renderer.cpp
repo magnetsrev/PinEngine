@@ -61,6 +61,11 @@ namespace PinEngine
 			// Set up the viewport.
 			CD3D11_VIEWPORT viewport(0.0f, 0.0f, static_cast<float>(width), static_cast<float>(height));
 			deviceContext->RSSetViewports(1, &viewport);
+
+			for (auto& obj : currentScene->objects_2d)
+			{
+				obj->UpdateMatrix();
+			}
 		}
 	}
 
@@ -73,13 +78,12 @@ namespace PinEngine
 
 		deviceContext->VSSetConstantBuffers(0, 1, cb_wvp.GetAddressOf());
 		
-
 		int cnt = 0;
 		for (auto & uiObject : currentScene->objects_2d)
 		{
 			uiObject->processedEventsPerFrame = 0;
 			uiObject->OnUpdateTick();
-			cb_wvp.data = uiObject->worldMatrix * DirectX::XMMatrixOrthographicLH(width, height, 0.01, 100);
+			cb_wvp.data = uiObject->worldMatrix * DirectX::XMMatrixOrthographicLH(PipelineManager::GetWidth(), PipelineManager::GetHeight(), 0.01, 100);
 			cb_wvp.ApplyChanges();
 
 			PipelineManager::SetPipelineState(uiObject->pipelineState);

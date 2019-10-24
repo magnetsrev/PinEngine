@@ -131,6 +131,10 @@ namespace PinEngine
 			{
 				processedEventsPerFrame |= EventHandlerType::OnLeftClick;
 				isClicked = true;
+				if (isFocusable)
+				{
+					isFocused = true;
+				}
 				if (isDragEnabled)
 				{
 					dragDifference.x = this->pos.x - mouseEvent.GetPosX();
@@ -245,6 +249,11 @@ namespace PinEngine
 			ToggleMouseInteraction(true);
 		dragSnapIncrement.x = xSnap;
 		dragSnapIncrement.y = ySnap;
+	}
+
+	bool RenderableEngineObject2D::IsFocused()
+	{
+		return isFocused;
 	}
 
 	void RenderableEngineObject2D::UpdateMatrix()

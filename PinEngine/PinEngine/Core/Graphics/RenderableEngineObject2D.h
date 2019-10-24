@@ -7,6 +7,7 @@
 #include "Vertex.h"
 #include "../Input/Mouse.h"
 #include "../Event.h"
+#include <SimpleMath.h>
 
 namespace PinEngine
 {
@@ -27,7 +28,7 @@ namespace PinEngine
 		bool IsMouseOver();
 		bool IsClicked();
 		void EnableDrag(bool isEnabled, float xSnap=0, float ySnap=0);
-
+		bool IsFocused();
 		Event<RenderableEngineObject2D> OnMouseOver;
 		Event<RenderableEngineObject2D> OnMouseExit;
 		Event<RenderableEngineObject2D> OnUpdate;
@@ -55,5 +56,7 @@ namespace PinEngine
 		bool isDragEnabled = false;
 		DirectX::XMFLOAT2 dragDifference = { 0, 0 };
 		DirectX::XMFLOAT2 dragSnapIncrement = { 0,0 };
+		bool isFocusable = true;
+		bool isFocused = false;
 	};
 }

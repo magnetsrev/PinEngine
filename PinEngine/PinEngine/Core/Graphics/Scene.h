@@ -12,8 +12,8 @@ namespace PinEngine
 		bool HasObject(std::shared_ptr<RenderableEngineObject2D> object);
 		void RemoveObject(std::shared_ptr<RenderableEngineObject2D> object);
 		std::vector<std::shared_ptr<RenderableEngineObject2D>> Get2DObjects();
+		std::shared_ptr<RenderableEngineObject2D> focusedWidget = nullptr;
 	private:
 		std::vector<std::shared_ptr<RenderableEngineObject2D>> objects_2d;
-
 	};
 }

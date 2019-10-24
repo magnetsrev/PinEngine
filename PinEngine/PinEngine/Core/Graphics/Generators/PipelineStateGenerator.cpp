@@ -23,10 +23,8 @@ namespace PinEngine
 
 			//Create Rasterizer State
 			CD3D11_RASTERIZER_DESC rasterizerDesc(D3D11_DEFAULT);
-			//rasterizerDesc.CullMode = D3D11_CULL_NONE;
 			hr = device->CreateRasterizerState(&rasterizerDesc, &defaultState->rasterizerState);
 			COM_ERROR_IF_FAILED(hr, L"Failed to create rasterizer state.");
-
 
 			std::wstring shaderfolder = BuildPath();
 
