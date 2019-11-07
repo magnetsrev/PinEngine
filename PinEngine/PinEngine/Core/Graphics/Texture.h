@@ -23,7 +23,9 @@ namespace PinEngine
 		Texture(const Color& color, aiTextureType type);
 		Texture(const Color* colorData, UINT width, UINT height, aiTextureType type); //Generate texture of specific color data
 		Texture(const std::wstring& filePath, aiTextureType type = aiTextureType::aiTextureType_UNKNOWN);
-		Texture(const uint8_t* pData, size_t size, aiTextureType type);
+		Texture(const uint8_t* pData, size_t size, aiTextureType type = aiTextureType::aiTextureType_UNKNOWN);
+		Texture(const uint8_t* pData, DXGI_FORMAT textureFormat, uint32_t textureWidth, uint32_t textureHeight, uint32_t textureStride);
+
 		aiTextureType GetType();
 		ID3D11ShaderResourceView* GetTextureResourceView();
 		ID3D11ShaderResourceView** GetTextureResourceViewAddress();

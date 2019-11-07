@@ -18,11 +18,12 @@ namespace PinEngine
 		TransparencyAllowed = (1 << 5),
 		Topmost = (1 << 6)
 	};
+
 	class Window
 	{
 		friend class Renderer;
 	public:
-		bool Initialize(HINSTANCE hInstance, std::wstring window_title, std::wstring window_class, int width = 800, int height = 600, int startupX = -1, int startupY = -1, WindowStyle style = (WindowStyle)(Resizable));
+		bool Initialize(HINSTANCE hInstance, std::wstring window_title, std::wstring window_class, int width = 800, int height = 600, int startupX = -1, int startupY = -1, WindowStyle style = WindowStyle::Resizable);
 		bool ProcessMessages();
 		HWND GetHWND() const;
 		LRESULT WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);

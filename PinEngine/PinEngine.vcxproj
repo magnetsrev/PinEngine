@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -159,12 +159,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="PinEngine\Core\Graphics\UI\UIFont.cpp" />
     <ClCompile Include="PinEngine\Core\Graphics\Color.cpp" />
     <ClCompile Include="PinEngine\Common\ErrorLogger.cpp" />
     <ClCompile Include="PinEngine\Core\EngineObject.cpp" />
     <ClCompile Include="PinEngine\Core\Graphics\Generators\SceneGenerator.cpp" />
     <ClCompile Include="PinEngine\Core\Graphics\RenderableEngineObject2D.cpp" />
     <ClCompile Include="PinEngine\Core\Graphics\Texture.cpp" />
+    <ClCompile Include="PinEngine\Core\Graphics\UI\Label.cpp" />
+    <ClCompile Include="PinEngine\Core\Graphics\UI\Sprite.cpp" />
     <ClCompile Include="PinEngine\Core\Input\InputManager.cpp" />
     <ClCompile Include="PinEngine\Utility\BuildPath.cpp" />
     <ClCompile Include="PinEngine\Core\Graphics\Generators\PipelineStateGenerator.cpp" />
@@ -180,11 +183,16 @@
     <ClCompile Include="PinEngine\Core\Graphics\Scene.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="PinEngine\Utility\StringHelper.cpp" />
+    <ClCompile Include="PinEngine\Core\Graphics\UI\Widget.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="PinEngine\Core\Graphics\UI\UIFont.h" />
+    <ClInclude Include="PinEngine\Core\Graphics\UI\Label.h" />
+    <ClInclude Include="PinEngine\Core\Graphics\UI\WidgetType.h" />
+    <ClInclude Include="PinEngine\Utility\EnumClassBitwiseGenerator.h" />
     <ClInclude Include="PinEngine\Core\Input\InputManager.h" />
     <ClInclude Include="PinEngine\Core\Event.h" />
-    <ClInclude Include="PinEngine\Core\Graphics\AnchorPoint.h" />
+    <ClInclude Include="PinEngine\Core\Graphics\UI\AnchorPoint.h" />
     <ClInclude Include="PinEngine\Core\Graphics\Color.h" />
     <ClInclude Include="PinEngine\Core\Graphics\ConstantBuffer.h" />
     <ClInclude Include="PinEngine\Core\Graphics\ConstantBufferTypes.h" />
@@ -212,6 +220,9 @@
     <ClInclude Include="PinEngine\Utility\StringHelper.h" />
     <ClInclude Include="PinEngine\Core\Graphics\Vertex.h" />
     <ClInclude Include="PinEngine\Core\Graphics\Generators\SceneGenerator.h" />
+    <ClInclude Include="PinEngine\Core\Graphics\UI\Widget.h" />
+    <ClInclude Include="PinEngine\Utility\PinMath.h" />
+    <ClInclude Include="PinEngine\Core\Graphics\UI\Sprite.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="ps_2d.hlsl">

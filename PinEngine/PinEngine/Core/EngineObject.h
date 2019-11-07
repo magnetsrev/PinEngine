@@ -1,5 +1,6 @@
 #pragma once
 #include <DirectXMath.h>
+#include <memory>
 
 namespace PinEngine
 {

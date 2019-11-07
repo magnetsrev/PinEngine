@@ -55,6 +55,12 @@
     <Filter Include="Source Files\PinEngine\Core\Graphics\Generators">
       <UniqueIdentifier>{1f7f722e-c0e3-4b2a-9cf9-ab5d73fcd840}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\PinEngine\Core\Graphics\UI">
+      <UniqueIdentifier>{7f1aa2d2-fa84-429b-8aa9-551413134e67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PinEngine\Core\Graphics\UI">
+      <UniqueIdentifier>{27d1344b-5c68-44a2-b2cd-ff01b25b72eb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -119,6 +125,18 @@
     </ClCompile>
     <ClCompile Include="PinEngine\Core\Graphics\Generators\SceneGenerator.cpp">
       <Filter>Source Files\PinEngine\Core\Graphics\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="PinEngine\Core\Graphics\UI\Widget.cpp">
+      <Filter>Source Files\PinEngine\Core\Graphics\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="PinEngine\Core\Graphics\UI\Sprite.cpp">
+      <Filter>Source Files\PinEngine\Core\Graphics\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="PinEngine\Core\Graphics\UI\Label.cpp">
+      <Filter>Source Files\PinEngine\Core\Graphics\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="PinEngine\Core\Graphics\UI\UIFont.cpp">
+      <Filter>Source Files\PinEngine\Core\Graphics\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -188,9 +206,6 @@
     <ClInclude Include="PinEngine\Core\Graphics\ConstantBuffer.h">
       <Filter>Header Files\PinEngine\Core\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="PinEngine\Core\Graphics\AnchorPoint.h">
-      <Filter>Header Files\PinEngine\Core\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="PinEngine\Core\Graphics\Texture.h">
       <Filter>Header Files\PinEngine\Core\Graphics</Filter>
     </ClInclude>
@@ -211,6 +226,30 @@
     </ClInclude>
     <ClInclude Include="PinEngine\Core\Graphics\Generators\SceneGenerator.h">
       <Filter>Header Files\PinEngine\Core\Graphics\Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Core\Graphics\UI\Widget.h">
+      <Filter>Header Files\PinEngine\Core\Graphics\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Core\Graphics\UI\AnchorPoint.h">
+      <Filter>Header Files\PinEngine\Core\Graphics\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Utility\EnumClassBitwiseGenerator.h">
+      <Filter>Header Files\PinEngine\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Utility\PinMath.h">
+      <Filter>Header Files\PinEngine\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Core\Graphics\UI\Sprite.h">
+      <Filter>Header Files\PinEngine\Core\Graphics\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Core\Graphics\UI\WidgetType.h">
+      <Filter>Header Files\PinEngine\Core\Graphics\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Core\Graphics\UI\Label.h">
+      <Filter>Header Files\PinEngine\Core\Graphics\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Core\Graphics\UI\UIFont.h">
+      <Filter>Header Files\PinEngine\Core\Graphics\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

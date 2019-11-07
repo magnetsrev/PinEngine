@@ -14,6 +14,7 @@ namespace PinEngine
 			texcoords.x = u;
 			texcoords.y = v;
 		}
+		Vertex_2D_Texture() {}
 		DirectX::XMFLOAT3 position;
 		DirectX::XMFLOAT2 texcoords;
 	};

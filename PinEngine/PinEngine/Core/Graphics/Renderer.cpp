@@ -62,10 +62,10 @@ namespace PinEngine
 			CD3D11_VIEWPORT viewport(0.0f, 0.0f, static_cast<float>(width), static_cast<float>(height));
 			deviceContext->RSSetViewports(1, &viewport);
 
-			for (auto& obj : currentScene->objects_2d)
+			/*for (auto& obj : currentScene->objects_2d)
 			{
 				obj->UpdateMatrix();
-			}
+			}*/
 		}
 	}
 
@@ -79,7 +79,17 @@ namespace PinEngine
 		deviceContext->VSSetConstantBuffers(0, 1, cb_wvp.GetAddressOf());
 		
 		int cnt = 0;
-		for (auto & uiObject : currentScene->objects_2d)
+		for (auto& widget : currentScene->widgets)
+		{
+			widget->OnUpdateTick();
+		}
+		for (auto& widget : currentScene->widgets)
+		{
+			cb_wvp.data = widget->worldMatrix * DirectX::XMMatrixOrthographicLH(PipelineManager::GetWidth(), PipelineManager::GetHeight(), 0.01, 100);
+			cb_wvp.ApplyChanges();
+			widget->Render();
+		}
+		/*for (auto & uiObject : currentScene->objects_2d)
 		{
 			uiObject->processedEventsPerFrame = 0;
 			uiObject->OnUpdateTick();
@@ -92,7 +102,7 @@ namespace PinEngine
 			const auto& vBuffer = uiObject->v_positions;
 			deviceContext->IASetVertexBuffers(0, 1, vBuffer->GetAddressOf(), vBuffer->StridePtr(), &offsets);
 			deviceContext->Draw(vBuffer->VertexCount(), 0);
-		}
+		}*/
 
 		swapchain->Present(1, NULL);
 	}

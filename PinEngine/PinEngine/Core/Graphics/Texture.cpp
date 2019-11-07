@@ -52,6 +52,20 @@ namespace PinEngine
 		COM_ERROR_IF_FAILED(hr, L"Failed to create Texture from memory.");
 	}
 
+	Texture::Texture(const uint8_t* pData, DXGI_FORMAT textureFormat, uint32_t textureWidth, uint32_t textureHeight, uint32_t textureStride)
+	{
+		type = aiTextureType::aiTextureType_UNKNOWN;
+		CD3D11_TEXTURE2D_DESC textureDesc(textureFormat, textureWidth, textureHeight, 1, 1, D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_IMMUTABLE);
+		CD3D11_SHADER_RESOURCE_VIEW_DESC viewDesc(D3D11_SRV_DIMENSION_TEXTURE2D, textureFormat);
+		D3D11_SUBRESOURCE_DATA initData = { pData, textureStride, 0 };
+		
+		auto device = PipelineManager::GetDevice();
+		HRESULT hr = device->CreateTexture2D(&textureDesc, &initData, (ID3D11Texture2D**)(texture.GetAddressOf()));
+		COM_ERROR_IF_FAILED(hr, L"Failed to create Texture from memory.");
+		hr = device->CreateShaderResourceView(texture.Get(), &viewDesc, &textureView);
+		COM_ERROR_IF_FAILED(hr, L"Failed to create Texture from memory.");
+	}
+
 	aiTextureType Texture::GetType()
 	{
 		return type;

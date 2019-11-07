@@ -365,14 +365,14 @@ namespace PinEngine
 
 	bool Window::ToggleClickthrough(bool clickthrough)
 	{
-		LONG currentStyle = GetWindowLongPtr(handle, GWL_EXSTYLE);
+		LONG_PTR currentStyle = GetWindowLongPtr(handle, GWL_EXSTYLE);
 		if (clickthrough) //Enable click through
 		{
 			currentStyle |= WS_EX_TRANSPARENT;
 		}
 		else //Disable click through
 		{
-			LONG removeStyle = ~WS_EX_TRANSPARENT;
+			LONG_PTR removeStyle = ~WS_EX_TRANSPARENT;
 			currentStyle &= removeStyle;
 		}
 		if (SetWindowLongPtr(handle, GWL_EXSTYLE, currentStyle) == 0)
@@ -388,9 +388,9 @@ namespace PinEngine
 			MouseEvent mouseEvent = mouse->ReadEvent();
 			if (scene)
 			{
-				for (const auto& obj : scene->Get2DObjects())
+				for (const auto& widget : scene->GetWidgets())
 				{
-					obj->ProcessMouseEvent(mouseEvent);
+					widget->ProcessMouseEvent(mouseEvent);
 				}
 			}
 			if (mouseEvent.GetType() == MouseEvent::LPress)
