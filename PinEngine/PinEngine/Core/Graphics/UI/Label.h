@@ -15,18 +15,20 @@ namespace PinEngine
 			void SetText(std::wstring text);
 			std::wstring GetText();
 			void SetFontSize(float fontSize);
-			void Render() override;
+			void SetColor(Color color);
+			void RenderOverride(DirectX::FXMMATRIX cameraMatrix) override;
 		protected:
 			void OnInitialize() override;
 		private:
 			void CalculateDimensions();
 			template<typename TAction>
 			inline void ForEachGlyph(wchar_t const* text, TAction action);
-			VertexBuffer<Vertex_2D_Texture> textVertices;
+			VertexBuffer<Vertex_2D_PositionTexcoordColor> textVertices;
 			float fontSize = 16;
 			uint32_t letterCount = 0;
 			DirectX::XMFLOAT2 textDimensions = { 0, 0 };
 			std::wstring text = L"UNINITIALIZED TEXT FIELD";
+			Color color;
 			std::shared_ptr<UIFont> font = nullptr;
 			std::unique_ptr<DirectX::SpriteBatch> spriteBatch = nullptr;
 			std::unique_ptr<DirectX::SpriteFont> spriteFont = nullptr;

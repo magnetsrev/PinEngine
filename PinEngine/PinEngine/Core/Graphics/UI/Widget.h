@@ -25,18 +25,21 @@ namespace PinEngine
 			void AddChild(std::shared_ptr<Widget> child);
 			bool HasChild(std::shared_ptr<Widget> child);
 			void SetDimensions(float width, float height);
-			virtual void Render();
 			void ProcessMouseEvent(MouseEvent mouseEvent);
 			void ToggleMouseInteraction(bool isEnabled);
 			bool IsMouseOver();
 			bool IsClicked();
+			void Render(DirectX::FXMMATRIX cameraMatrix);
 			void EnableDrag(bool isEnabled, float xSnap=0, float ySnap=0);
+			Widget* GetParent();
 			Event<Widget> OnMouseOver;
 			Event<Widget> OnMouseExit;
 			Event<Widget> OnUpdate;
 			Event<Widget> OnLeftClick;
 			Event<Widget> OnLeftRelease;
 		protected:
+			virtual void RenderOverride(DirectX::FXMMATRIX cameraMatrix);
+
 			virtual void OnInitialize(); //This will be called after default initialize runs for classes inheriting widget
 			void UpdateMatrix() override;
 			WidgetType widgetType = WidgetType::Unknown;

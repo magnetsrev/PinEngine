@@ -27,7 +27,7 @@ namespace PinEngine
 		constexpr BYTE GetA() const;
 		void SetA(BYTE a);
 
-	private:
+	public:
 		union
 		{
 			BYTE rgba[4];
@@ -39,5 +39,6 @@ namespace PinEngine
 	{
 		const Color UnloadedTextureColor(100, 100, 100);
 		const Color UnhandledTextureColor(250, 0, 0);
+		const Color DefaultTextColor(225, 225, 225);
 	}
 }

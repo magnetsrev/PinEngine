@@ -138,6 +138,9 @@
     <ClCompile Include="PinEngine\Core\Graphics\UI\UIFont.cpp">
       <Filter>Source Files\PinEngine\Core\Graphics\UI</Filter>
     </ClCompile>
+    <ClCompile Include="PinEngine\Core\Graphics\UI\CheckBox.cpp">
+      <Filter>Source Files\PinEngine\Core\Graphics\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PinEngine\Core\Input\Keyboard.h">
@@ -251,6 +254,12 @@
     <ClInclude Include="PinEngine\Core\Graphics\UI\UIFont.h">
       <Filter>Header Files\PinEngine\Core\Graphics\UI</Filter>
     </ClInclude>
+    <ClInclude Include="PinEngine\Core\Graphics\UI\CheckBox.h">
+      <Filter>Header Files\PinEngine\Core\Graphics\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Core\Graphics\UI\TextBox.h">
+      <Filter>Header Files\PinEngine\Core\Graphics\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\ps.hlsl">
@@ -263,6 +272,12 @@
       <Filter>Resource Files</Filter>
     </FxCompile>
     <FxCompile Include="vs_2d.hlsl">
+      <Filter>Resource Files</Filter>
+    </FxCompile>
+    <FxCompile Include="ps_2d_text.hlsl">
+      <Filter>Resource Files</Filter>
+    </FxCompile>
+    <FxCompile Include="vs_2d_text.hlsl">
       <Filter>Resource Files</Filter>
     </FxCompile>
   </ItemGroup>

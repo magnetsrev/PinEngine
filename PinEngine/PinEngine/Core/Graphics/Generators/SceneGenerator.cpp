@@ -1,5 +1,5 @@
 #include "SceneGenerator.h"
-#include "..//UI//Label.h"
+#include "..//UI//CheckBox.h"
 
 using namespace PinEngine;
 using namespace PinEngine::UI;
@@ -21,52 +21,29 @@ shared_ptr<Scene> SceneGenerator::GenerateTestScene()
 	shared_ptr<Label> lbl1 = make_shared<Label>();
 	lbl1->Initialize(AnchorPoint::BottomLeft, testSprite.get(), AnchorPoint::TopLeft);
 	lbl1->SetFont(font);
-	lbl1->SetText(L"Topleft label.");
+	lbl1->SetColor(Color(75, 75, 255));
+	lbl1->SetText(L"This is a |cFFFF00FFmulticolored|r text test. Pipe check: ||One ||||Two ||||||Three\nNew Line Test");
 
-	shared_ptr<Label> lbl2 = make_shared<Label>();
-	lbl2->Initialize(AnchorPoint::TopLeft, testSprite.get(), AnchorPoint::BottomLeft);
-	lbl2->SetFont(font);
-	lbl2->SetText(L"Bottomleft label.");
+	shared_ptr<CheckBox> cb1 = make_shared<CheckBox>();
+	cb1->Initialize(AnchorPoint::TopLeft, testSprite.get(), AnchorPoint::BottomLeft);
+	cb1->SetPosition(0, -5);
+	cb1->SetFont(font);
+	cb1->SetText(L"Click the checkbox!");
+	cb1->OnChecked += [](CheckBox* cb)
+	{
+		cb->SetText(L"The checkbox was checked!");
+		cb->SetTextColor(Color(45, 200, 45));
+	};
+	cb1->OnUnchecked += [](CheckBox* cb)
+	{
+		cb->SetText(L"The checkbox was unchecked! :O");
+		cb->SetTextColor(Color(200, 45, 45));
+	};
 
+	testSprite->AddChild(lbl1);
+	testSprite->AddChild(cb1);
 	scene->AddWidget(testSprite);
-	scene->AddWidget(lbl1);
-	scene->AddWidget(lbl2);
 
 	return scene;
 
-
-	/*testSprite->OnUpdate += [](Widget* widget)
-	{
-		widget->AdjustRotation(0, 0, 0.01f);
-	};
-	testSprite->OnLeftClick += [](Widget* widget)
-	{
-		widget->AdjustRotation(0, 0, 0.6f);
-	};*/
-
-	//scene->AddWidget(shared_ptr<Widget>(label));
-
-	//auto bigSprite = std::make_shared<RenderableEngineObject2D>();
-	//bigSprite->Initialize(UI::AnchorPoint::TopLeft, nullptr, UI::AnchorPoint::TopLeft);
-	//bigSprite->SetDimensions(256, 256);
-
-	//bigSprite->EnableDrag(true); //Allow drag, no snapping
-	//bigSprite->OnLeftClick += [](RenderableEngineObject2D* obj)
-	//{
-	//	obj->AssignTexture(L"Data/Textures/mario.png");
-	//};
-
-	//bigSprite->OnLeftRelease += [](RenderableEngineObject2D* obj)
-	//{
-	//	obj->AssignTexture(L"missingtexture");
-	//};
-
-	//auto littleSprite = std::make_shared<RenderableEngineObject2D>();
-	//littleSprite->EnableDrag(true, 32, 32); //Allow drag & snap every 32 px for x and y
-	//littleSprite->Initialize(AnchorPoint::TopLeft, bigSprite, AnchorPoint::BottomLeft);
-	//littleSprite->AssignTexture(L"Data/Textures/smiley.png");
-	//littleSprite->SetDimensions(64, 64);
-
-	//scene->AddObject(bigSprite);
-	//scene->AddObject(littleSprite);
 }

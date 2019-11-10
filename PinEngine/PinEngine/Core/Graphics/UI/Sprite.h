@@ -11,7 +11,7 @@ namespace PinEngine
 		public:
 			std::shared_ptr<Texture> GetTexture();
 			void AssignTexture(std::wstring path);
-			void Render() override;
+			void RenderOverride(DirectX::FXMMATRIX cameraMatrix) override;
 		protected:
 			void OnInitialize() override;
 		private:

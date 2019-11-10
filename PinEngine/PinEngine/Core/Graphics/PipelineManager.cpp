@@ -92,10 +92,21 @@ namespace PinEngine
 		PipelineManager::height = height;
 	}
 
+	void PipelineManager::RegisterCameraConstantBuffer(PinEngine::ConstantBuffer<DirectX::XMMATRIX>* cameraConstantBuffer)
+	{
+		PipelineManager::cameraConstantBuffer = cameraConstantBuffer;
+	}
+
+	PinEngine::ConstantBuffer<DirectX::XMMATRIX>* PipelineManager::GetCameraConstantBuffer()
+	{
+		return PipelineManager::cameraConstantBuffer;
+	}
+
 	std::shared_ptr<PipelineState> PipelineManager::state = nullptr;
 	Microsoft::WRL::ComPtr<ID3D11Device> PipelineManager::device;
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> PipelineManager::deviceContext;
 	Microsoft::WRL::ComPtr<IDXGISwapChain> PipelineManager::swapchain;
 	int PipelineManager::width = 0;
 	int PipelineManager::height = 0;
+	PinEngine::ConstantBuffer<DirectX::XMMATRIX>* PipelineManager::cameraConstantBuffer = nullptr;
 }

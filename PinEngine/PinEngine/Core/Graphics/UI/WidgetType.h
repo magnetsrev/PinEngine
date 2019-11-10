@@ -7,7 +7,8 @@ namespace PinEngine
 		{
 			Unknown,
 			Sprite,
-			Label
+			Label,
+			CheckBox
 		};
 	}
 }

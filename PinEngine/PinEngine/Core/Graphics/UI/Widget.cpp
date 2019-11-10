@@ -77,14 +77,23 @@ void Widget::SetDimensions(float width, float height)
 	UpdateMatrix();
 }
 
+void Widget::RenderOverride(FXMMATRIX cameraMatrix)
+{
+	assert("RenderOverride must be overridden." && 0);
+}
+
 void Widget::OnInitialize()
 {
 	assert("OnInitialize should be overridden with a function to initialize the custom widgetType." && 0);
 }
 
-void Widget::Render()
+void Widget::Render(FXMMATRIX cameraMatrix)
 {
-	assert("Render must be overridden." && 0);
+	for (auto& c : children)
+	{
+		c->Render(cameraMatrix);
+	}
+	RenderOverride(cameraMatrix);
 }
 
 void Widget::ProcessMouseEvent(MouseEvent mouseEvent)
@@ -92,6 +101,11 @@ void Widget::ProcessMouseEvent(MouseEvent mouseEvent)
 	if (!mouseInteractionEnabled)
 		return;
 		
+	for (auto& child : children)
+	{
+		child->ProcessMouseEvent(mouseEvent);
+	}
+
 	MousePoint mousePoint = mouseEvent.GetPos();
 	mousePoint.x -= PipelineManager::GetWidth() / 2;
 	mousePoint.y -= PipelineManager::GetHeight() / 2;
@@ -210,6 +224,11 @@ void Widget::EnableDrag(bool isEnabled, float xSnap, float ySnap)
 		ToggleMouseInteraction(true);
 	dragSnapIncrement.x = xSnap;
 	dragSnapIncrement.y = ySnap;
+}
+
+Widget* PinEngine::UI::Widget::GetParent()
+{
+	return parent;
 }
 
 void Widget::UpdateMatrix()
@@ -348,7 +367,7 @@ void Widget::UpdateMatrix()
 	}
 }
 
-void PinEngine::UI::Widget::OnUpdateTick()
+void Widget::OnUpdateTick()
 {
 	for (auto& fnc : OnUpdate.callbacks)
 	{

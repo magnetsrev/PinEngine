@@ -159,6 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="PinEngine\Core\Graphics\UI\CheckBox.cpp" />
     <ClCompile Include="PinEngine\Core\Graphics\UI\UIFont.cpp" />
     <ClCompile Include="PinEngine\Core\Graphics\Color.cpp" />
     <ClCompile Include="PinEngine\Common\ErrorLogger.cpp" />
@@ -186,6 +187,7 @@
     <ClCompile Include="PinEngine\Core\Graphics\UI\Widget.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="PinEngine\Core\Graphics\UI\CheckBox.h" />
     <ClInclude Include="PinEngine\Core\Graphics\UI\UIFont.h" />
     <ClInclude Include="PinEngine\Core\Graphics\UI\Label.h" />
     <ClInclude Include="PinEngine\Core\Graphics\UI\WidgetType.h" />
@@ -223,9 +225,20 @@
     <ClInclude Include="PinEngine\Core\Graphics\UI\Widget.h" />
     <ClInclude Include="PinEngine\Utility\PinMath.h" />
     <ClInclude Include="PinEngine\Core\Graphics\UI\Sprite.h" />
+    <ClInclude Include="PinEngine\Core\Graphics\UI\TextBox.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="ps_2d.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="ps_2d_text.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
@@ -256,6 +269,16 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="vs_2d.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="vs_2d_text.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>

@@ -37,8 +37,11 @@ void Sprite::AssignTexture(wstring path)
 	}
 }
 
-void Sprite::Render()
+void Sprite::RenderOverride(DirectX::FXMMATRIX cameraMatrix)
 {
+	auto cb_wvp = PipelineManager::GetCameraConstantBuffer();
+	cb_wvp->data = worldMatrix * cameraMatrix;
+	cb_wvp->ApplyChanges();
 	PipelineManager::SetPipelineState(pipelineState);
 	deviceContext->PSSetShaderResources(0, 1, GetTexture()->GetTextureResourceViewAddress());
 	UINT offsets = 0;

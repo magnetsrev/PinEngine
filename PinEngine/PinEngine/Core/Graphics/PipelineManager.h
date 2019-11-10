@@ -1,6 +1,8 @@
 #pragma once
 #include "PipelineState.h"
 #include <wrl/client.h>
+#include "ConstantBuffer.h"
+#include <DirectXMath.h>
 
 namespace PinEngine
 {
@@ -18,6 +20,8 @@ namespace PinEngine
 		static int GetHeight();
 		static void SetWidth(int width);
 		static void SetHeight(int height);
+		static void RegisterCameraConstantBuffer(PinEngine::ConstantBuffer<DirectX::XMMATRIX>* cameraConstantBuffer);
+		static PinEngine::ConstantBuffer<DirectX::XMMATRIX> * GetCameraConstantBuffer();
 	private:
 		static int width;
 		static int height;
@@ -25,5 +29,6 @@ namespace PinEngine
 		static Microsoft::WRL::ComPtr<ID3D11Device> device;
 		static Microsoft::WRL::ComPtr<ID3D11DeviceContext> deviceContext;
 		static Microsoft::WRL::ComPtr<IDXGISwapChain> swapchain;
+		static PinEngine::ConstantBuffer<DirectX::XMMATRIX>* cameraConstantBuffer;
 	};
 }

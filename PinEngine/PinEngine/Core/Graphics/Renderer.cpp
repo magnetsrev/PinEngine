@@ -83,11 +83,11 @@ namespace PinEngine
 		{
 			widget->OnUpdateTick();
 		}
+
+		DirectX::XMMATRIX cameraMatrix = DirectX::XMMatrixOrthographicLH(PipelineManager::GetWidth(), PipelineManager::GetHeight(), 0.01, 100);
 		for (auto& widget : currentScene->widgets)
 		{
-			cb_wvp.data = widget->worldMatrix * DirectX::XMMatrixOrthographicLH(PipelineManager::GetWidth(), PipelineManager::GetHeight(), 0.01, 100);
-			cb_wvp.ApplyChanges();
-			widget->Render();
+			widget->Render(cameraMatrix);
 		}
 		/*for (auto & uiObject : currentScene->objects_2d)
 		{
@@ -190,6 +190,8 @@ namespace PinEngine
 			}
 
 			COM_ERROR_IF_FAILED(cb_wvp.Initialize(device, deviceContext), L"Failed to initialize constant buffer");
+
+			PipelineManager::RegisterCameraConstantBuffer(&cb_wvp);
 
 			if (!ResourceManager::GetResource(L"default_2d", pipelineState))
 				return false;

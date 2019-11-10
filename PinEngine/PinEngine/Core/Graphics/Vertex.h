@@ -18,4 +18,24 @@ namespace PinEngine
 		DirectX::XMFLOAT3 position;
 		DirectX::XMFLOAT2 texcoords;
 	};
+	class Vertex_2D_PositionTexcoordColor
+	{
+	public:
+		Vertex_2D_PositionTexcoordColor(float x, float y, float z, float u, float v, float r, float g, float b, float a)
+		{
+			position.x = x;
+			position.y = y;
+			position.z = z;
+			texcoords.x = u;
+			texcoords.y = v;
+			color.x = r;
+			color.y = g;
+			color.z = b;
+			color.w = a;
+		}
+		Vertex_2D_PositionTexcoordColor() {}
+		DirectX::XMFLOAT3 position;
+		DirectX::XMFLOAT2 texcoords;
+		DirectX::XMFLOAT4 color;
+	};
 }
