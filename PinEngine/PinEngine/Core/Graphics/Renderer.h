@@ -12,6 +12,8 @@
 #include "Generators//PipelineStateGenerator.h"
 #include "Scene.h"
 #include "ConstantBuffer.h"
+#include <SpriteFont.h>
+#include <SpriteBatch.h>
 
 namespace PinEngine
 {
@@ -46,7 +48,7 @@ namespace PinEngine
 		std::shared_ptr<Mouse> mouse;
 		std::shared_ptr<Keyboard> keyboard;
 		std::shared_ptr<Scene> currentScene = nullptr;
-		
+
 		Window* parentWindow = nullptr;
 		HWND windowHandle = NULL;
 		int width = 0;

@@ -264,30 +264,30 @@ void Widget::UpdateMatrix()
 		switch (elementAnchor)
 		{
 		case AnchorPoint::TopLeft:
-			childXOffset = dimensions.x / 2;
-			childYOffset = -dimensions.y / 2;
+			childXOffset = dimensions.x*scale.x / 2;
+			childYOffset = -dimensions.y*scale.y / 2;
 			break;
 		case AnchorPoint::TopRight:
-			childXOffset = -dimensions.x / 2;
-			childYOffset = -dimensions.y / 2;
+			childXOffset = -dimensions.x * scale.x / 2;
+			childYOffset = -dimensions.y * scale.y / 2;
 			break;
 		case AnchorPoint::Center:
 
 			break;
 		case AnchorPoint::BottomLeft:
-			childXOffset = dimensions.x / 2;
-			childYOffset = dimensions.y / 2;
+			childXOffset = dimensions.x * scale.x / 2;
+			childYOffset = dimensions.y * scale.y / 2;
 			break;
 		case AnchorPoint::BottomRight:
-			childXOffset = -dimensions.x / 2;
-			childYOffset = dimensions.y / 2;
+			childXOffset = -dimensions.x * scale.x / 2;
+			childYOffset = dimensions.y * scale.y / 2;
 			break;
 		}
 
 		if (omitDimensionScalingMatrix)
 		{
-			worldMatrix = XMMatrixTranslation(childXOffset, childYOffset, 0) * XMMatrixRotationRollPitchYaw(rot.x, rot.y, rot.z) * XMMatrixTranslation(parentXOffset + pos.x, parentYOffset + pos.y, pos.z);
-			uiChildMatrix = XMMatrixTranslation(childXOffset, childYOffset, 0) * XMMatrixRotationRollPitchYaw(rot.x, rot.y, rot.z) * XMMatrixTranslation(parentXOffset + pos.x, parentYOffset + pos.y, pos.z);
+			worldMatrix = XMMatrixScaling(scale.x, scale.y, scale.z) * XMMatrixTranslation(childXOffset, childYOffset, 0) * XMMatrixRotationRollPitchYaw(rot.x, rot.y, rot.z) * XMMatrixTranslation(parentXOffset + pos.x, parentYOffset + pos.y, pos.z);
+			uiChildMatrix = XMMatrixScaling(scale.x, scale.y, scale.z) * XMMatrixTranslation(childXOffset, childYOffset, 0) * XMMatrixRotationRollPitchYaw(rot.x, rot.y, rot.z) * XMMatrixTranslation(parentXOffset + pos.x, parentYOffset + pos.y, pos.z);
 		}
 		else
 		{
@@ -324,6 +324,28 @@ void Widget::UpdateMatrix()
 		switch (elementAnchor)
 		{
 		case AnchorPoint::TopLeft:
+			childXOffset = dimensions.x * scale.x / 2;
+			childYOffset = -dimensions.y * scale.y / 2;
+			break;
+		case AnchorPoint::TopRight:
+			childXOffset = -dimensions.x * scale.x / 2;
+			childYOffset = -dimensions.y * scale.y / 2;
+			break;
+		case AnchorPoint::Center:
+
+			break;
+		case AnchorPoint::BottomLeft:
+			childXOffset = dimensions.x * scale.x / 2;
+			childYOffset = dimensions.y * scale.y / 2;
+			break;
+		case AnchorPoint::BottomRight:
+			childXOffset = -dimensions.x * scale.x / 2;
+			childYOffset = dimensions.y * scale.y / 2;
+			break;
+		}
+		/*switch (elementAnchor)
+		{
+		case AnchorPoint::TopLeft:
 			childXOffset = dimensions.x / 2;
 			childYOffset = -dimensions.y / 2;
 			break;
@@ -342,11 +364,11 @@ void Widget::UpdateMatrix()
 			childXOffset = -dimensions.x / 2;
 			childYOffset = dimensions.y / 2;
 			break;
-		}
+		}*/
 		if (omitDimensionScalingMatrix)
 		{
-			worldMatrix = XMMatrixTranslation(childXOffset, childYOffset, 0) * XMMatrixRotationRollPitchYaw(rot.x, rot.y, rot.z) * XMMatrixTranslation(parentXOffset + pos.x, parentYOffset + pos.y, pos.z) * parent->uiChildMatrix;
-			uiChildMatrix = XMMatrixTranslation(childXOffset, childYOffset, 0) * XMMatrixRotationRollPitchYaw(rot.x, rot.y, rot.z) * XMMatrixTranslation(parentXOffset + pos.x, parentYOffset + pos.y, pos.z) * parent->uiChildMatrix;
+			worldMatrix = XMMatrixScaling(scale.x, scale.y, scale.z) * XMMatrixTranslation(childXOffset, childYOffset, 0) * XMMatrixRotationRollPitchYaw(rot.x, rot.y, rot.z) * XMMatrixTranslation(parentXOffset + pos.x, parentYOffset + pos.y, pos.z) * parent->uiChildMatrix;
+			uiChildMatrix = XMMatrixScaling(scale.x, scale.y, scale.z) * XMMatrixTranslation(childXOffset, childYOffset, 0) * XMMatrixRotationRollPitchYaw(rot.x, rot.y, rot.z) * XMMatrixTranslation(parentXOffset + pos.x, parentYOffset + pos.y, pos.z) * parent->uiChildMatrix;
 		}
 		else
 		{

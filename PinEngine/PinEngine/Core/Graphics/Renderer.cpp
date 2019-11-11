@@ -3,6 +3,7 @@
 #include "..//..//Utility/BuildPath.h"
 #include "VertexBuffer.h"
 #include "ResourceManager.h"
+#include "..//..//Utility//Timer.h"
 
 namespace PinEngine
 {
@@ -62,10 +63,10 @@ namespace PinEngine
 			CD3D11_VIEWPORT viewport(0.0f, 0.0f, static_cast<float>(width), static_cast<float>(height));
 			deviceContext->RSSetViewports(1, &viewport);
 
-			/*for (auto& obj : currentScene->objects_2d)
+			for (auto& widget : currentScene->widgets)
 			{
-				obj->UpdateMatrix();
-			}*/
+				widget->UpdateMatrix();
+			}
 		}
 	}
 
@@ -78,7 +79,6 @@ namespace PinEngine
 
 		deviceContext->VSSetConstantBuffers(0, 1, cb_wvp.GetAddressOf());
 		
-		int cnt = 0;
 		for (auto& widget : currentScene->widgets)
 		{
 			widget->OnUpdateTick();
@@ -104,7 +104,7 @@ namespace PinEngine
 			deviceContext->Draw(vBuffer->VertexCount(), 0);
 		}*/
 
-		swapchain->Present(1, NULL);
+		swapchain->Present(0, NULL);
 	}
 
 	std::shared_ptr<Scene> Renderer::GetActiveScene()

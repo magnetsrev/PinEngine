@@ -1,5 +1,6 @@
 #include "SceneGenerator.h"
 #include "..//UI//CheckBox.h"
+#include "..//..//..//Utility//Timer.h"
 
 using namespace PinEngine;
 using namespace PinEngine::UI;
@@ -8,42 +9,61 @@ using namespace std;
 shared_ptr<Scene> SceneGenerator::GenerateTestScene()
 {
 	auto scene = make_shared<Scene>();
-	
-	auto testSprite = make_shared<Sprite>();
-	testSprite->Initialize(AnchorPoint::Center);
-	testSprite->SetDimensions(100, 100);
-	testSprite->AssignTexture(L"Data/Textures/smile.png");
-	testSprite->EnableDrag(true);
 
 	shared_ptr<UIFont> font = make_shared<UIFont>();
 	bool result = font->LoadFont(L"Data/Fonts/times_new_roman_16.pinfont");
 
-	shared_ptr<Label> lbl1 = make_shared<Label>();
-	lbl1->Initialize(AnchorPoint::BottomLeft, testSprite.get(), AnchorPoint::TopLeft);
-	lbl1->SetFont(font);
-	lbl1->SetColor(Color(75, 75, 255));
-	lbl1->SetText(L"This is a |cFFFF00FFmulticolored|r text test. Pipe check: ||One ||||Two ||||||Three\nNew Line Test");
+	/*shared_ptr<Label> exampleLabel = make_shared<Label>();
+	exampleLabel->Initialize(AnchorPoint::TopLeft);
+	exampleLabel->SetFont(font);
+	exampleLabel->SetScale(2, 2);
+	exampleLabel->SetText(L"Multicolored example. |cFF0000FFRed|r, |c00FF00FFGreen|r, and |c0000FFFFBlue|r.");
 
-	shared_ptr<CheckBox> cb1 = make_shared<CheckBox>();
-	cb1->Initialize(AnchorPoint::TopLeft, testSprite.get(), AnchorPoint::BottomLeft);
-	cb1->SetPosition(0, -5);
-	cb1->SetFont(font);
-	cb1->SetText(L"Click the checkbox!");
-	cb1->OnChecked += [](CheckBox* cb)
+	scene->AddWidget(exampleLabel);*/
+
+	/*shared_ptr<Sprite> sp = make_shared<Sprite>();
+	sp->Initialize(AnchorPoint::TopLeft);
+	sp->SetDimensions(64, 64);
+	sp->SetScale(2, 2);
+	scene->AddWidget(sp);*/
+
+	shared_ptr<Label> fpsLabel = make_shared<Label>();
+	fpsLabel->Initialize(AnchorPoint::TopLeft);
+	fpsLabel->SetFont(font);
+	fpsLabel->SetScale(2, 2);
+	static Timer timer;
+	timer.Start();
+	fpsLabel->OnUpdate += [](Widget* widget)
 	{
-		cb->SetText(L"The checkbox was checked!");
-		cb->SetTextColor(Color(45, 200, 45));
-	};
-	cb1->OnUnchecked += [](CheckBox* cb)
-	{
-		cb->SetText(L"The checkbox was unchecked! :O");
-		cb->SetTextColor(Color(200, 45, 45));
+		Label* label = (Label*)widget;
+
+		static int frameCount = 0;
+
+		frameCount += 1;
+		const double updateInterval = 4; //Update 8 times a second
+		if ((timer.GetMilisecondsElapsed()) >= (1000/updateInterval))
+		{
+			timer.Restart();
+			if (frameCount >= (7000/updateInterval))
+			{
+				label->SetText(L"FPS: |c55FF55FF" + to_wstring(frameCount * (int)updateInterval));
+			}
+			else
+			{
+				label->SetText(L"FPS: |cFF5555FF" + to_wstring(frameCount * (int)updateInterval));
+			}
+			frameCount = 0;
+		}
 	};
 
-	testSprite->AddChild(lbl1);
-	testSprite->AddChild(cb1);
-	scene->AddWidget(testSprite);
+	shared_ptr<Label> exampleLabel = make_shared<Label>();
+	exampleLabel->Initialize(AnchorPoint::TopLeft, fpsLabel.get(), AnchorPoint::BottomLeft);
+	exampleLabel->SetFont(font);
+	exampleLabel->SetText(L"Multicolored example. |cFF0000FFRed|r, |c00FF00FFGreen|r, and |c0000FFFFBlue|r.");
+	exampleLabel->SetScale(0.5f, 0.5f);
 
+	fpsLabel->AddChild(exampleLabel);
+	scene->AddWidget(fpsLabel);
 	return scene;
 
 }

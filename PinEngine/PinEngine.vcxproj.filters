@@ -141,6 +141,9 @@
     <ClCompile Include="PinEngine\Core\Graphics\UI\CheckBox.cpp">
       <Filter>Source Files\PinEngine\Core\Graphics\UI</Filter>
     </ClCompile>
+    <ClCompile Include="PinEngine\Utility\Timer.cpp">
+      <Filter>Source Files\PinEngine\Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PinEngine\Core\Input\Keyboard.h">
@@ -259,6 +262,9 @@
     </ClInclude>
     <ClInclude Include="PinEngine\Core\Graphics\UI\TextBox.h">
       <Filter>Header Files\PinEngine\Core\Graphics\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Utility\Timer.h">
+      <Filter>Header Files\PinEngine\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
