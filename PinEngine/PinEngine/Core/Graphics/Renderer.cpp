@@ -50,6 +50,9 @@ namespace PinEngine
 			CD3D11_TEXTURE2D_DESC depthStencilTextureDesc(DXGI_FORMAT_D24_UNORM_S8_UINT, width, height);
 			depthStencilTextureDesc.MipLevels = 1;
 			depthStencilTextureDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+			depthStencilTextureDesc.SampleDesc.Count = 4;
+			depthStencilTextureDesc.SampleDesc.Quality = 0;
+
 
 			hr = device->CreateTexture2D(&depthStencilTextureDesc, NULL, &depthStencilBuffer);
 			COM_ERROR_IF_FAILED(hr, L"Failed to create depth stencil buffer.");
@@ -131,8 +134,10 @@ namespace PinEngine
 			scd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 			scd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 
-			scd.SampleDesc.Count = 1;
+			scd.SampleDesc.Count = 4; //JMP
 			scd.SampleDesc.Quality = 0;
+
+			
 
 			scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 			scd.BufferCount = 1; //double buffered by default in windowed mode
@@ -155,6 +160,7 @@ namespace PinEngine
 				NULL, //Supported feature level
 				&deviceContext); //Device Context Address
 
+			
 			COM_ERROR_IF_FAILED(hr, L"Failed to create device and swapchain.");
 
 			PipelineManager::RegisterSwapchain(swapchain);
@@ -172,6 +178,8 @@ namespace PinEngine
 			CD3D11_TEXTURE2D_DESC depthStencilTextureDesc(DXGI_FORMAT_D24_UNORM_S8_UINT, width, height);
 			depthStencilTextureDesc.MipLevels = 1;
 			depthStencilTextureDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+			depthStencilTextureDesc.SampleDesc.Count = 4;
+			depthStencilTextureDesc.SampleDesc.Quality = 0;
 
 			hr = device->CreateTexture2D(&depthStencilTextureDesc, NULL, &depthStencilBuffer);
 			COM_ERROR_IF_FAILED(hr, L"Failed to create depth stencil buffer.");
@@ -199,7 +207,7 @@ namespace PinEngine
 		}
 		catch (COMException& ex)
 		{
-			MessageBoxW(NULL, L"Critical Exception!", ex.what(), MB_SYSTEMMODAL);
+			MessageBoxW(NULL, ex.what(), L"Critical Exception!", MB_SYSTEMMODAL);
 			return false;
 		}
 

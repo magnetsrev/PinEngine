@@ -21,11 +21,17 @@ shared_ptr<Scene> SceneGenerator::GenerateTestScene()
 
 	scene->AddWidget(exampleLabel);*/
 
-	/*shared_ptr<Sprite> sp = make_shared<Sprite>();
-	sp->Initialize(AnchorPoint::TopLeft);
-	sp->SetDimensions(64, 64);
-	sp->SetScale(2, 2);
-	scene->AddWidget(sp);*/
+	shared_ptr<Sprite> sp = make_shared<Sprite>();
+	sp->Initialize(AnchorPoint::Center);
+	sp->SetDimensions(256, 256);
+	sp->SetRotation(0, 0, 0.5f);
+	scene->AddWidget(sp);
+
+	shared_ptr<Label> brLabel = make_shared<Label>();
+	brLabel->Initialize(AnchorPoint::BottomRight);
+	brLabel->SetFont(font);
+	brLabel->SetText(L"This is anchored at the bottom right!");
+	scene->AddWidget(brLabel);
 
 	shared_ptr<Label> fpsLabel = make_shared<Label>();
 	fpsLabel->Initialize(AnchorPoint::TopLeft);
@@ -50,7 +56,7 @@ shared_ptr<Scene> SceneGenerator::GenerateTestScene()
 			}
 			else
 			{
-				label->SetText(L"FPS: |cFF5555FF" + to_wstring(frameCount * (int)updateInterval));
+				label->SetText(L"'_FPS: |cFF5555FF" + to_wstring(frameCount * (int)updateInterval));
 			}
 			frameCount = 0;
 		}

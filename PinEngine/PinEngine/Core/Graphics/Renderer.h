@@ -14,6 +14,7 @@
 #include "ConstantBuffer.h"
 #include <SpriteFont.h>
 #include <SpriteBatch.h>
+#define JMP_SAMPLECOUNT 4
 
 namespace PinEngine
 {

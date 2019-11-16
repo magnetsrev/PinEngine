@@ -23,6 +23,8 @@ bool PipelineStateGenerator::BuildPipelineStates(ComPtr<ID3D11Device> device)
 
 		//Create Rasterizer State
 		CD3D11_RASTERIZER_DESC rasterizerDesc(D3D11_DEFAULT);
+		rasterizerDesc.MultisampleEnable = TRUE; //JMP
+		rasterizerDesc.AntialiasedLineEnable = TRUE; //JMP
 		hr = device->CreateRasterizerState(&rasterizerDesc, &defaultState->rasterizerState);
 		COM_ERROR_IF_FAILED(hr, L"Failed to create rasterizer state.");
 
@@ -60,6 +62,8 @@ bool PipelineStateGenerator::BuildPipelineStates(ComPtr<ID3D11Device> device)
 
 		//Create Rasterizer State
 		CD3D11_RASTERIZER_DESC rasterizerDesc(D3D11_DEFAULT);
+		rasterizerDesc.MultisampleEnable = TRUE; //JMP
+		rasterizerDesc.AntialiasedLineEnable = TRUE; //JMP
 		//rasterizerDesc.CullMode = D3D11_CULL_NONE;
 		hr = device->CreateRasterizerState(&rasterizerDesc, &state_default_2d->rasterizerState);
 		COM_ERROR_IF_FAILED(hr, L"Failed to create rasterizer state.");
