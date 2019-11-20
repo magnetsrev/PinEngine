@@ -159,6 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="PinEngine\Core\Graphics\Helpers\BC4TextureGenerator.cpp" />
     <ClCompile Include="PinEngine\Core\Graphics\UI\CheckBox.cpp" />
     <ClCompile Include="PinEngine\Core\Graphics\UI\UIFont.cpp" />
     <ClCompile Include="PinEngine\Core\Graphics\Color.cpp" />
@@ -188,6 +189,7 @@
     <ClCompile Include="PinEngine\Core\Graphics\UI\Widget.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="PinEngine\Core\Graphics\Helpers\BC4TextureGenerator.h" />
     <ClInclude Include="PinEngine\Core\Graphics\UI\CheckBox.h" />
     <ClInclude Include="PinEngine\Core\Graphics\UI\UIFont.h" />
     <ClInclude Include="PinEngine\Core\Graphics\UI\Label.h" />

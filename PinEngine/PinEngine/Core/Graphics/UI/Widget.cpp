@@ -24,7 +24,7 @@ bool Widget::Initialize(AnchorPoint elementAnchor, Widget* parent, AnchorPoint p
 				
 		std::vector<PinEngine::Vertex_2D_Texture> vertices
 		{
-			Vertex_2D_Texture(-0.5f,	+0.5f, 1.0f, 0, 0), //Top Left
+			Vertex_2D_Texture(-0.5f,	+0.5f, 1.0f, 0, 0), //Top Left [x,y,z] [u,v]
 			Vertex_2D_Texture(+0.5f,	+0.5f, 1.0f, 1, 0), //Top Right
 			Vertex_2D_Texture(+0.5f,	-0.5f, 1.0f, 1, 1), //Bottom Right
 			Vertex_2D_Texture(-0.5f,	+0.5f, 1.0f, 0, 0), //Top Left

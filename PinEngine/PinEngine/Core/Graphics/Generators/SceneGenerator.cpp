@@ -1,7 +1,8 @@
 #include "SceneGenerator.h"
 #include "..//UI//CheckBox.h"
 #include "..//..//..//Utility//Timer.h"
-
+#include "..//ResourceManager.h"
+#include "..//Helpers//BC4TextureGenerator.h"
 using namespace PinEngine;
 using namespace PinEngine::UI;
 using namespace std;
@@ -13,18 +14,31 @@ shared_ptr<Scene> SceneGenerator::GenerateTestScene()
 	shared_ptr<UIFont> font = make_shared<UIFont>();
 	bool result = font->LoadFont(L"Data/Fonts/times_new_roman_16.pinfont");
 
-	/*shared_ptr<Label> exampleLabel = make_shared<Label>();
-	exampleLabel->Initialize(AnchorPoint::TopLeft);
-	exampleLabel->SetFont(font);
-	exampleLabel->SetScale(2, 2);
-	exampleLabel->SetText(L"Multicolored example. |cFF0000FFRed|r, |c00FF00FFGreen|r, and |c0000FFFFBlue|r.");
+	int width = 256;
+	int height = 256;
+	vector<uint8_t> uncompressedTextureData(width * height);
+	for (int x = 0; x < width; x++)
+	{
+		for (int y = 0; y < height; y++)
+		{
+			uint8_t brightness = x * 255 / width;
+			const int index = (x + y * width);
+			uncompressedTextureData[index] = brightness;
+		}
+	}
 
-	scene->AddWidget(exampleLabel);*/
+	BC4TextureGenerator compressedTextureGenerator;
+	compressedTextureGenerator.GenerateFromData(uncompressedTextureData, width, height, false);
+	vector<uint8_t> textureData = compressedTextureGenerator.GetCompressedData();
+
+	shared_ptr<Texture> texture = make_shared<Texture>(textureData.data(), DXGI_FORMAT::DXGI_FORMAT_BC4_UNORM, width, height, width * 2);
+	ResourceManager::RegisterResource(L"test", texture);
+
 
 	shared_ptr<Sprite> sp = make_shared<Sprite>();
 	sp->Initialize(AnchorPoint::Center);
+	sp->AssignTexture(L"test");
 	sp->SetDimensions(256, 256);
-	sp->SetRotation(0, 0, 0.5f);
 	scene->AddWidget(sp);
 
 	shared_ptr<Label> brLabel = make_shared<Label>();

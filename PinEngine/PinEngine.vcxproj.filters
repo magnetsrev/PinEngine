@@ -61,6 +61,12 @@
     <Filter Include="Source Files\PinEngine\Core\Graphics\UI">
       <UniqueIdentifier>{27d1344b-5c68-44a2-b2cd-ff01b25b72eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\PinEngine\Core\Graphics\Helpers">
+      <UniqueIdentifier>{cb14aac1-0848-426c-b4ac-bbe0c747c971}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PinEngine\Core\Graphics\Helpers">
+      <UniqueIdentifier>{f87e977c-51c2-409c-96d8-717d28428c76}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -143,6 +149,9 @@
     </ClCompile>
     <ClCompile Include="PinEngine\Utility\Timer.cpp">
       <Filter>Source Files\PinEngine\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="PinEngine\Core\Graphics\Helpers\BC4TextureGenerator.cpp">
+      <Filter>Source Files\PinEngine\Core\Graphics\Helpers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -265,6 +274,9 @@
     </ClInclude>
     <ClInclude Include="PinEngine\Utility\Timer.h">
       <Filter>Header Files\PinEngine\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Core\Graphics\Helpers\BC4TextureGenerator.h">
+      <Filter>Header Files\PinEngine\Core\Graphics\Helpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
