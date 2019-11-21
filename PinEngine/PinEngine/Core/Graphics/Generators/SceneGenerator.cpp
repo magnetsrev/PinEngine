@@ -13,33 +13,43 @@ shared_ptr<Scene> SceneGenerator::GenerateTestScene()
 {
 	auto scene = make_shared<Scene>();
 
-	shared_ptr<UIFont> font = make_shared<UIFont>();
-	bool result = font->LoadFont(L"Data/Fonts/times_new_roman_16.pinfont");
+	/*shared_ptr<UIFont> font = make_shared<UIFont>();
+	bool result = font->LoadFont(L"Data/Fonts/times_new_roman_16.pinfont");*/
 
-	int width = 256;
-	int height = 256;
-	vector<uint8_t> uncompressedTextureData(width * height);
-	for (int x = 0; x < width; x++)
-	{
-		for (int y = 0; y < height; y++)
-		{
-			uint8_t brightness = x * 255 / width;
-			const int index = (x + y * width);
-			uncompressedTextureData[index] = brightness;
-		}
-	}
-
-	BC4TextureGenerator compressedTextureGenerator;
-	compressedTextureGenerator.GenerateFromData(uncompressedTextureData, width, height, false);
-	vector<uint8_t> textureData = compressedTextureGenerator.GetCompressedData();
-
-	int stride = width * 2;
-	shared_ptr<Texture> texture = make_shared<Texture>(textureData.data(), DXGI_FORMAT::DXGI_FORMAT_BC4_UNORM, width, height, stride);
-	ResourceManager::RegisterResource(L"test", texture);
-
-
+	Timer t;
+	t.Start();
 	SpritesheetGenerator sg;
-	sg.GenerateSheet(L"Arial", 64);
+	sg.GenerateSheet(L"Arial", 20);
+
+
+	shared_ptr<UIFont> font = make_shared<UIFont>();
+	for (auto& g : sg.glyphs)
+	{
+		UIFont::FontGlyph glyph;
+		glyph.Character = g.character;
+		RECT area;
+		area.left = g.drawOffsetX;
+		area.top = g.drawOffsetY;
+		area.bottom = g.drawOffsetY + g.charHeight;
+		area.right = g.drawOffsetX + g.charWidth;
+		glyph.Subrect = area;
+		glyph.YOffset = g.yOffset;
+		glyph.XAdvance = 0;
+		glyph.XOffset = 0;
+		font->glyphs.push_back(glyph);
+	}
+	font->lineSpacing = sg.lineSpacing;
+	font->textureHeight = sg.GetSheetTexture()->GetDimensions().y;
+	font->textureWidth = sg.GetSheetTexture()->GetDimensions().x;
+	font->defaultGlyph = font->FindGlyph('?');
+	font->texture = sg.GetSheetTexture();
+	//bool result = font->LoadFont(L"Data/Fonts/times_new_roman_16.pinfont");
+
+	t.Stop();
+	float dt = t.GetMilisecondsElapsed();
+	OutputDebugStringA("A:");
+	OutputDebugStringA(std::to_string(dt).c_str());
+	OutputDebugStringA("\n");
 	ResourceManager::RegisterResource(L"spritesheet", sg.GetSheetTexture());
 	shared_ptr<Sprite> sp = make_shared<Sprite>();
 	sp->Initialize(AnchorPoint::Center);
@@ -47,16 +57,15 @@ shared_ptr<Scene> SceneGenerator::GenerateTestScene()
 	sp->SetDimensions(sg.GetSheetTexture()->GetDimensions().x, sg.GetSheetTexture()->GetDimensions().y);
 	scene->AddWidget(sp);
 
-	shared_ptr<Label> brLabel = make_shared<Label>();
+	/*shared_ptr<Label> brLabel = make_shared<Label>();
 	brLabel->Initialize(AnchorPoint::BottomRight);
 	brLabel->SetFont(font);
 	brLabel->SetText(L"FFFFFFFF!");
-	scene->AddWidget(brLabel);
+	scene->AddWidget(brLabel);*/
 
 	shared_ptr<Label> fpsLabel = make_shared<Label>();
 	fpsLabel->Initialize(AnchorPoint::TopLeft);
 	fpsLabel->SetFont(font);
-	fpsLabel->SetScale(2, 2);
 	static Timer timer;
 	timer.Start();
 	fpsLabel->OnUpdate += [](Widget* widget)
@@ -76,7 +85,7 @@ shared_ptr<Scene> SceneGenerator::GenerateTestScene()
 			}
 			else
 			{
-				label->SetText(L"'_FPS: |cFF5555FF" + to_wstring(frameCount * (int)updateInterval));
+				label->SetText(L"FPS: |cFF5555FF" + to_wstring(frameCount * (int)updateInterval));
 			}
 			frameCount = 0;
 		}
@@ -86,9 +95,10 @@ shared_ptr<Scene> SceneGenerator::GenerateTestScene()
 	exampleLabel->Initialize(AnchorPoint::TopLeft, fpsLabel.get(), AnchorPoint::BottomLeft);
 	exampleLabel->SetFont(font);
 	exampleLabel->SetText(L"Multicolored example. |cFF0000FFRed|r, |c00FF00FFGreen|r, and |c0000FFFFBlue|r.");
-	exampleLabel->SetScale(0.5f, 0.5f);
+
 
 	fpsLabel->AddChild(exampleLabel);
+
 	scene->AddWidget(fpsLabel);
 	return scene;
 

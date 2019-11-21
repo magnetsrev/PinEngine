@@ -1,5 +1,6 @@
 #include "SpritesheetGenerator.h"
 #include "BC4TextureGenerator.h"
+#include "..//..//..//Utility//Timer.h"
 
 namespace PinEngine
 {
@@ -18,26 +19,43 @@ namespace PinEngine
 			}
 		}
 
-		bitmap = std::make_unique<Gdiplus::Bitmap>(1024, 1024);
+		lineSpacing = font->GetHeight(gfx.get());
+		int pixelSize = PointsToPixels(fontSize) * 4/3;
+		int dimensions = 32;
+		while (dimensions < pixelSize)
+		{
+			dimensions <<= 1;
+		}
+
+		bitmap = std::make_unique<Gdiplus::Bitmap>(dimensions, dimensions);
 		gfx = std::make_unique<Gdiplus::Graphics>(bitmap.get());
 		brush = Gdiplus::SolidBrush(Gdiplus::Color(255, 255, 255, 255)).Clone();
 		gfx->SetPixelOffsetMode(Gdiplus::PixelOffsetMode::PixelOffsetModeHighQuality);
 		gfx->SetInterpolationMode(Gdiplus::InterpolationMode::InterpolationModeHighQualityBicubic);
 		gfx->SetTextRenderingHint(Gdiplus::TextRenderingHint::TextRenderingHintAntiAliasGridFit);
-		
-		
-		std::vector<ParseGlyph> glyphs;
-		glyphs.push_back(GenerateGlyphFromCharacter('A'));
-		glyphs.push_back(GenerateGlyphFromCharacter('B'));
-		glyphs.push_back(GenerateGlyphFromCharacter('C'));
-		glyphs.push_back(GenerateGlyphFromCharacter('D'));
-		glyphs.push_back(GenerateGlyphFromCharacter('E'));
-		glyphs.push_back(GenerateGlyphFromCharacter('F'));
-		glyphs.push_back(GenerateGlyphFromCharacter('G'));
-		glyphs.push_back(GenerateGlyphFromCharacter('h'));
-		//glyphs.push_back(GenerateGlyphFromCharacter('g'));
+
+
+		for (wchar_t letter = ' '; letter <= '~'; letter++)
+		{
+			glyphs.push_back(GenerateGlyphFromCharacter(letter));
+		}
+		/*for (wchar_t letter = 'A'; letter <= 'Z'; letter++)
+		{
+			glyphs.push_back(GenerateGlyphFromCharacter(letter));
+		}
+		for (wchar_t letter = '0'; letter <= '9'; letter++)
+		{
+			glyphs.push_back(GenerateGlyphFromCharacter(letter));
+		}
 		glyphs.push_back(GenerateGlyphFromCharacter(','));
-		//glyphs.push_back(GenerateGlyphFromCharacter('a'));
+		glyphs.push_back(GenerateGlyphFromCharacter(':'));
+		glyphs.push_back(GenerateGlyphFromCharacter(' '));
+
+		glyphs.push_back(GenerateGlyphFromCharacter('?'));
+		glyphs.push_back(GenerateGlyphFromCharacter('`'));
+		glyphs.push_back(GenerateGlyphFromCharacter('\''));
+		glyphs.push_back(GenerateGlyphFromCharacter('_'));*/
+
 
 		for (int i = 0; i < (glyphs.size()-1); i++)
 		{
@@ -66,26 +84,43 @@ namespace PinEngine
 		}
 
 
-		int requiredWidth = 0;
+		int requiredWidth = maxGlyphWidth;
 		int requiredHeight = 0;
 		for (int i = 0; i < glyphs.size(); i++)
 		{
-			requiredWidth += glyphs[i].charWidth + 1;
 			requiredHeight = std::max(requiredHeight, glyphs[i].charHeight);
 		}
 
 		std::vector<uint8_t> pixelData;
-		int fixedWidth = requiredWidth;
-		if (fixedWidth % 4 != 0)
-			fixedWidth += 4 - (fixedWidth % 4);
-		int fixedHeight = requiredHeight;
-		if (fixedHeight % 4 != 0)
-			fixedHeight += 4 - (fixedHeight % 4);
+		int fixedWidth = 32;
+		while (fixedWidth < requiredWidth)
+		{
+			fixedWidth <<= 1;
+		}
+		int fixedHeight = fixedWidth;
 		pixelData.resize(fixedWidth * fixedHeight, 0);
 
 		int xoffset = 0;
+		int yoffset = 0;
+		int maxY = 0;
 		for (auto& glyph : glyphs)
 		{
+			if (xoffset + glyph.charWidth > fixedWidth)
+			{
+				xoffset = 0;
+				yoffset += maxY;
+				maxY = 0;
+			}
+			maxY = std::max(maxY, glyph.charHeight);
+
+			if ((yoffset + glyph.charHeight) > fixedHeight)
+			{
+				fixedHeight <<= 1;
+				pixelData.resize(fixedWidth * fixedHeight, 0);
+			}
+
+			glyph.drawOffsetX = xoffset;
+			glyph.drawOffsetY = yoffset;
 			Gdiplus::BitmapData bitmapData;
 			const Gdiplus::Rect glyphRect(glyph.xOffset, glyph.yOffset, glyph.charWidth, glyph.charHeight);
 			glyph.bitmap->LockBits(&glyphRect, Gdiplus::ImageLockMode::ImageLockModeRead | Gdiplus::ImageLockMode::ImageLockModeWrite, PixelFormat32bppARGB, &bitmapData);
@@ -100,7 +135,7 @@ namespace PinEngine
 					PixColor* pixelPtr = ((PixColor*)bitmapData.Scan0 + ((y) * bitmapData.Stride / 4 + (x)));
 					if (pixelPtr->rgba[3] > 0)
 					{
-						pixelData[x + xoffset + (y) * fixedWidth] = pixelPtr->rgba[3];
+						pixelData[x + xoffset + (yoffset + y) * fixedWidth] = pixelPtr->rgba[3];
 					}
 				}
 			}
@@ -116,6 +151,7 @@ namespace PinEngine
 		textureGen.GenerateFromData(pixelData, fixedWidth, fixedHeight);
 		std::vector<uint8_t> compressedData = textureGen.GetCompressedData();
 		texture = std::make_shared<Texture>(compressedData.data(), DXGI_FORMAT::DXGI_FORMAT_BC4_UNORM, fixedWidth, fixedHeight, fixedWidth*2);
+
 		return true;
 	}
 
@@ -147,8 +183,8 @@ namespace PinEngine
 		glyphBitmap->LockBits(&glyphRect, Gdiplus::ImageLockMode::ImageLockModeRead | Gdiplus::ImageLockMode::ImageLockModeWrite, PixelFormat32bppARGB, &bitmapData);
 		int actualWidth = 0;
 		int actualHeight = 0;
-		int minX = 500;
-		int minY = 500;
+		int minX = 999999;
+		int minY = 999999;
 		for (int y = 0; y < bitmapData.Height; y++)
 		{
 			for (int x = 0; x < bitmapData.Width; x++)
@@ -169,18 +205,20 @@ namespace PinEngine
 			}
 		}
 
-		minX -= 1;
-		minY -= 1;
-		actualWidth += 2;
-		actualHeight += 2;
-
-		int fixedWidth = actualWidth;
-		if (fixedWidth % 4 != 0)
-			fixedWidth += 4 - (fixedWidth % 4);
-		int fixedHeight = actualHeight;
-		if (fixedHeight % 4 != 0)
-			fixedHeight += 4 - (fixedHeight % 4);
-
+		if (actualWidth <= 0 || actualHeight <= 0)
+		{
+			actualHeight = 0;
+			actualWidth = charWidth;
+			minY = 0;
+			minX = 0;
+		}
+		else
+		{
+			if (minX>0) minX -= 1;
+			if (minY>0) minY -= 1;
+			actualWidth += 2;
+			actualHeight += 2;
+		}
 		glyphBitmap->UnlockBits(&bitmapData);
 		ParseGlyph glyph;
 		glyph.bitmap = glyphBitmap;

@@ -75,7 +75,7 @@ namespace PinEngine
 
 	void Renderer::RenderFrame()
 	{
-		float backgroundColor[] = { 0.3f, 0.3f, 0.3f, 0.0f };
+		float backgroundColor[] = { 0.0f, 0.0f, 0.0f, 0.0f };
 		deviceContext->ClearRenderTargetView(renderTargetView.Get(), backgroundColor);
 		deviceContext->ClearDepthStencilView(depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

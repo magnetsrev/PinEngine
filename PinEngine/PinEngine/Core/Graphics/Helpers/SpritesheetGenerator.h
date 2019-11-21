@@ -30,10 +30,14 @@ namespace PinEngine
 			int xOffset = 0;
 			int yOffset = 0;
 			wchar_t character = 0;
+			int drawOffsetX = 0;
+			int drawOffsetY = 0;
 		};
 		bool GenerateSheet(std::wstring fontName, float fontSize);
 		std::shared_ptr<Texture> GetSheetTexture();
-		
+		std::vector<ParseGlyph> glyphs;
+		float lineSpacing = 0;
+
 	private:
 		ParseGlyph GenerateGlyphFromCharacter(wchar_t character);
 		float PointsToPixels(float fontPoints);

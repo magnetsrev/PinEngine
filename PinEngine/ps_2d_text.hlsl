@@ -13,12 +13,10 @@ float4 main(PS_INPUT input) : SV_TARGET
 	
     //return float4(1, 1, 1, 1);
     float4 sampleColor = objTexture.Sample(objSamplerState, input.inTexCoord);
-    if (sampleColor.a  == 0)
+    if (sampleColor.r  == 0)
         discard;
 
-    float4 newColor = input.inColor * sampleColor;
-    if (newColor.a == 0)
-        discard;
+    float4 newColor = input.inColor * sampleColor.r;
 
     return float4(newColor);
 }

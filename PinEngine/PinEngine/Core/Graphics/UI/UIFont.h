@@ -28,8 +28,9 @@ namespace PinEngine
 			FontGlyph * defaultGlyph = nullptr;
 			float textureWidth = 0;
 			float textureHeight = 0;
-		private:
 			std::vector<FontGlyph> glyphs;
+
+		private:
 		};
 
 		
