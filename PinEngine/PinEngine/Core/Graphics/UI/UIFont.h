@@ -9,7 +9,6 @@ namespace PinEngine
 {
 	namespace UI
 	{
-
 		class UIFont
 		{
 		public:
@@ -21,7 +20,6 @@ namespace PinEngine
 				float YOffset;
 				float XAdvance;
 			};
-			bool LoadFont(std::wstring path);
 			std::shared_ptr<Texture> texture = nullptr;
 			FontGlyph * FindGlyph(wchar_t character);
 			float lineSpacing = 0;
@@ -29,8 +27,6 @@ namespace PinEngine
 			float textureWidth = 0;
 			float textureHeight = 0;
 			std::vector<FontGlyph> glyphs;
-
-		private:
 		};
 
 		

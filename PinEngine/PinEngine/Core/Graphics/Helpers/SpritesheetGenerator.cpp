@@ -34,28 +34,11 @@ namespace PinEngine
 		gfx->SetInterpolationMode(Gdiplus::InterpolationMode::InterpolationModeHighQualityBicubic);
 		gfx->SetTextRenderingHint(Gdiplus::TextRenderingHint::TextRenderingHintAntiAliasGridFit);
 
-
+		glyphs.reserve('~' - ' ' + 1);
 		for (wchar_t letter = ' '; letter <= '~'; letter++)
 		{
 			glyphs.push_back(GenerateGlyphFromCharacter(letter));
 		}
-		/*for (wchar_t letter = 'A'; letter <= 'Z'; letter++)
-		{
-			glyphs.push_back(GenerateGlyphFromCharacter(letter));
-		}
-		for (wchar_t letter = '0'; letter <= '9'; letter++)
-		{
-			glyphs.push_back(GenerateGlyphFromCharacter(letter));
-		}
-		glyphs.push_back(GenerateGlyphFromCharacter(','));
-		glyphs.push_back(GenerateGlyphFromCharacter(':'));
-		glyphs.push_back(GenerateGlyphFromCharacter(' '));
-
-		glyphs.push_back(GenerateGlyphFromCharacter('?'));
-		glyphs.push_back(GenerateGlyphFromCharacter('`'));
-		glyphs.push_back(GenerateGlyphFromCharacter('\''));
-		glyphs.push_back(GenerateGlyphFromCharacter('_'));*/
-
 
 		for (int i = 0; i < (glyphs.size()-1); i++)
 		{

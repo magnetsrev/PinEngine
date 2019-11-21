@@ -156,6 +156,9 @@
     <ClCompile Include="PinEngine\Core\Graphics\Helpers\SpritesheetGenerator.cpp">
       <Filter>Source Files\PinEngine\Core\Graphics\Helpers</Filter>
     </ClCompile>
+    <ClCompile Include="PinEngine\Core\Graphics\Helpers\FontManager.cpp">
+      <Filter>Source Files\PinEngine\Core\Graphics\Helpers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PinEngine\Core\Input\Keyboard.h">
@@ -282,6 +285,9 @@
       <Filter>Header Files\PinEngine\Core\Graphics\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="PinEngine\Core\Graphics\Helpers\SpritesheetGenerator.h">
+      <Filter>Header Files\PinEngine\Core\Graphics\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="PinEngine\Core\Graphics\Helpers\FontManager.h">
       <Filter>Header Files\PinEngine\Core\Graphics\Helpers</Filter>
     </ClInclude>
   </ItemGroup>

@@ -9,11 +9,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_ LPWSTR    lpCmdLine,
 	_In_ int       nCmdShow)
 {
-	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
-	ULONG_PTR           gdiplusToken;
-	Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
-
-
 	Window window;
 	WindowStyle style = (WindowStyle)(WindowStyle::ExitButton | WindowStyle::Resizable);
 	if (window.Initialize(hInstance, L"Test Title", L"Test Class", 800, 600, -1, -1, style))
