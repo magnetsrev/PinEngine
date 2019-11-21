@@ -3,6 +3,8 @@
 #include "..//..//..//Utility//Timer.h"
 #include "..//ResourceManager.h"
 #include "..//Helpers//BC4TextureGenerator.h"
+#include "..//Helpers//SpritesheetGenerator.h"
+
 using namespace PinEngine;
 using namespace PinEngine::UI;
 using namespace std;
@@ -31,20 +33,24 @@ shared_ptr<Scene> SceneGenerator::GenerateTestScene()
 	compressedTextureGenerator.GenerateFromData(uncompressedTextureData, width, height, false);
 	vector<uint8_t> textureData = compressedTextureGenerator.GetCompressedData();
 
-	shared_ptr<Texture> texture = make_shared<Texture>(textureData.data(), DXGI_FORMAT::DXGI_FORMAT_BC4_UNORM, width, height, width * 2);
+	int stride = width * 2;
+	shared_ptr<Texture> texture = make_shared<Texture>(textureData.data(), DXGI_FORMAT::DXGI_FORMAT_BC4_UNORM, width, height, stride);
 	ResourceManager::RegisterResource(L"test", texture);
 
 
+	SpritesheetGenerator sg;
+	sg.GenerateSheet(L"Arial", 64);
+	ResourceManager::RegisterResource(L"spritesheet", sg.GetSheetTexture());
 	shared_ptr<Sprite> sp = make_shared<Sprite>();
 	sp->Initialize(AnchorPoint::Center);
-	sp->AssignTexture(L"test");
-	sp->SetDimensions(256, 256);
+	sp->AssignTexture(L"spritesheet");
+	sp->SetDimensions(sg.GetSheetTexture()->GetDimensions().x, sg.GetSheetTexture()->GetDimensions().y);
 	scene->AddWidget(sp);
 
 	shared_ptr<Label> brLabel = make_shared<Label>();
 	brLabel->Initialize(AnchorPoint::BottomRight);
 	brLabel->SetFont(font);
-	brLabel->SetText(L"This is anchored at the bottom right!");
+	brLabel->SetText(L"FFFFFFFF!");
 	scene->AddWidget(brLabel);
 
 	shared_ptr<Label> fpsLabel = make_shared<Label>();

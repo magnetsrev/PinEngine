@@ -64,6 +64,8 @@ namespace PinEngine
 		COM_ERROR_IF_FAILED(hr, L"Failed to create Texture from memory.");
 		hr = device->CreateShaderResourceView(texture.Get(), &viewDesc, &textureView);
 		COM_ERROR_IF_FAILED(hr, L"Failed to create Texture from memory.");
+		dimensions.x = textureWidth;
+		dimensions.y = textureHeight;
 	}
 
 	aiTextureType Texture::GetType()
@@ -84,6 +86,11 @@ namespace PinEngine
 	bool Texture::IsValid()
 	{
 		return isValid;
+	}
+
+	DirectX::XMFLOAT2 Texture::GetDimensions()
+	{
+		return dimensions;
 	}
 
 	void Texture::Initialize1x1ColorTexture(const Color& colorData, aiTextureType type)

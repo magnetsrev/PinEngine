@@ -3,6 +3,7 @@
 #include <wrl/client.h>
 #include "Color.h"
 #include <assimp/material.h>
+#include <DirectXMath.h>
 
 namespace PinEngine
 {
@@ -30,7 +31,7 @@ namespace PinEngine
 		ID3D11ShaderResourceView* GetTextureResourceView();
 		ID3D11ShaderResourceView** GetTextureResourceViewAddress();
 		bool IsValid();
-
+		DirectX::XMFLOAT2 GetDimensions();
 	private:
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> textureView = nullptr;
 
@@ -38,6 +39,7 @@ namespace PinEngine
 		void InitializeColorTexture(const Color* colorData, UINT width, UINT height, aiTextureType type);
 		Microsoft::WRL::ComPtr<ID3D11Resource> texture = nullptr;
 		aiTextureType type = aiTextureType::aiTextureType_UNKNOWN;
+		DirectX::XMFLOAT2 dimensions = { 0,0 };
 		bool isValid = false;
 	};
 }

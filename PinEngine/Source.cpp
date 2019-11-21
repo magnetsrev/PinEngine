@@ -1,5 +1,6 @@
-#include "PinEngine/IncludeMe.h"
-#include "PinEngine/Core/Graphics/Generators/SceneGenerator.h"
+#include "PinEngine//IncludeMe.h"
+#include "PinEngine//Core//Graphics//Generators//SceneGenerator.h"
+#include "PinEngine//Core//Graphics//Helpers//SpritesheetGenerator.h"
 
 using namespace PinEngine;
 
@@ -8,6 +9,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_ LPWSTR    lpCmdLine,
 	_In_ int       nCmdShow)
 {
+	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+	ULONG_PTR           gdiplusToken;
+	Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
+
 
 	Window window;
 	WindowStyle style = (WindowStyle)(WindowStyle::ExitButton | WindowStyle::Resizable);
