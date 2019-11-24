@@ -110,6 +110,7 @@ bool PipelineStateGenerator::BuildPipelineStates(ComPtr<ID3D11Device> device)
 		CD3D11_RASTERIZER_DESC rasterizerDesc(D3D11_DEFAULT);
 		rasterizerDesc.MultisampleEnable = TRUE;
 		rasterizerDesc.AntialiasedLineEnable = TRUE;
+		rasterizerDesc.CullMode = D3D11_CULL_NONE;
 		//rasterizerDesc.CullMode = D3D11_CULL_NONE;
 		hr = device->CreateRasterizerState(&rasterizerDesc, &state_default_2d_text->rasterizerState);
 		COM_ERROR_IF_FAILED(hr, L"Failed to create rasterizer state.");

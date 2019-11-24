@@ -58,13 +58,13 @@ void Scene::AddWidget(std::shared_ptr<Widget> widget)
 	}
 
 	//Make sure parent has child added to its list of children if the object's parent is set
-	/*if (widget->parent != nullptr)
+	if (widget->parent != nullptr)
 	{
 		if (!widget->parent->HasChild(widget))
 		{
 			widget->parent->AddChild(widget);
 		}
-	}*/
+	}
 	widgets.push_back(widget);
 	/*for (auto w : widget->children)
 	{
