@@ -14,10 +14,13 @@ namespace PinEngine
 		FontManager::FontManager()
 		{
 			//GDIPlus Initialization
+			if (!initialized)
+			{
+				Gdiplus::GdiplusStartupInput gdiplusStartupInput{};
+				ULONG_PTR gdiplusToken;
+				Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
+			}
 			initialized = true;
-			Gdiplus::GdiplusStartupInput gdiplusStartupInput;
-			ULONG_PTR           gdiplusToken;
-			Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
 		}
 
 		std::shared_ptr<UIFont> FontManager::GetFont(std::wstring fontAlias, float fontPoint)
@@ -171,10 +174,23 @@ namespace PinEngine
 			std::vector<uint8_t> compressedData = textureGen.GetCompressedData();
 			std::shared_ptr<Texture> texture = std::make_shared<Texture>(compressedData.data(), DXGI_FORMAT::DXGI_FORMAT_BC4_UNORM, fixedWidth, fixedHeight, fixedWidth * 2);
 			
+			int spaceWidth = 0;
+			for (auto& g : glyphs)
+			{
+				if (g.character == ' ')
+				{
+					spaceWidth = g.charWidth;
+					break;
+				}
+			}
 			for (auto& g : glyphs)
 			{
 				UIFont::FontGlyph glyph;
 				glyph.Character = g.character;
+				if (g.character == '|')
+				{
+					Sleep(1);
+				}
 
 				//Calculate the subrect for the glyph
 				glyph.Subrect.left = g.drawOffsetX;
@@ -184,6 +200,10 @@ namespace PinEngine
 
 				glyph.YOffset = g.yOffset;
 				glyph.XAdvance = 0;
+				if (g.character == '|')
+				{
+					glyph.XAdvance = (g.suggestedCharWidth - g.charWidth)/2;
+				}
 				generatedFont->glyphs.push_back(glyph);
 			}
 			generatedFont->lineSpacing = lineSpacing;
@@ -202,21 +222,27 @@ namespace PinEngine
 			Gdiplus::StringFormat sf;
 			sf.SetFormatFlags(Gdiplus::StringFormatFlags::StringFormatFlagsNoFontFallback);
 
-			std::wstring charString = L"";
-			charString += character;
-			gfx->MeasureString(charString.c_str(), 1, font, Gdiplus::PointF(), &sf, &rect);
-			int charWidth = ceil(rect.Width);
-			int charHeight = ceil(rect.Height);
+			int characterWidthFromGDIPlus = 0;
+			int characterHeightFromGDIPlus = 0;
+			{ //Need to determine character width & height as well as draw the character to the GDIPlus graphics bitmap so that we can sample from it and add the character to our spritesheet
+				std::wstring charString = L"";
+				charString += character;
+				gfx->MeasureString(charString.c_str(), 1, font, Gdiplus::PointF(), &sf, &rect);
+				characterWidthFromGDIPlus = ceil(rect.Width);
+				characterHeightFromGDIPlus = ceil(rect.Height);
 
-			gfx->Clear(Gdiplus::Color(0, 0, 0));
-			gfx->DrawString(charString.c_str(), 1, font, Gdiplus::PointF(0, 0), brush);
-			gfx->Flush();
+				gfx->Clear(Gdiplus::Color(0, 0, 0));
+				gfx->DrawString(charString.c_str(), 1, font, Gdiplus::PointF(0, 0), brush);
+				gfx->Flush();
+			}
+			
 
-			const Gdiplus::Rect glyphRect(0, 0, charWidth, charHeight);
+			const Gdiplus::Rect glyphRect(0, 0, characterWidthFromGDIPlus, characterHeightFromGDIPlus); //Rectangle encapsulating the character we are processing from the bitmap
 
-			Gdiplus::Bitmap* glyphBitmap = bitmap->Clone(glyphRect, PixelFormat32bppARGB);
-			Gdiplus::BitmapData bitmapData;
-			glyphBitmap->LockBits(&glyphRect, Gdiplus::ImageLockMode::ImageLockModeRead | Gdiplus::ImageLockMode::ImageLockModeWrite, PixelFormat32bppARGB, &bitmapData);
+			Gdiplus::Bitmap* glyphBitmap = bitmap->Clone(glyphRect, PixelFormat32bppARGB); //Copy the bitmap data for reading
+			Gdiplus::BitmapData bitmapData; //Lockbits will store the bitmap data for the height/width we are processing - more importantly, we can access each individual pixel with the Scan0 member of the BitmapData struct
+			glyphBitmap->LockBits(&glyphRect, Gdiplus::ImageLockMode::ImageLockModeRead, PixelFormat32bppARGB, &bitmapData);
+			//We need to determine the actual width/height of the character as well as the min x/y values for when we sample this and add the character to our spritesheet
 			int actualWidth = 0;
 			int actualHeight = 0;
 			int minX = 999999;
@@ -229,9 +255,9 @@ namespace PinEngine
 					{
 						BYTE rgba[4];
 					} pixelColor;
-					PixColor* pixelPtr = ((PixColor*)bitmapData.Scan0 + (y * bitmapData.Stride / 4 + x));
+					PixColor* pixelPtr = ((PixColor*)bitmapData.Scan0 + (y * bitmapData.Stride / 4 + x)); //get pixel ptr for the given x,y coordinate
 					pixelPtr->rgba[3] = (pixelPtr->rgba[0] + pixelPtr->rgba[1] + pixelPtr->rgba[2]) / 3; //alpha = rgb average
-					if (pixelPtr->rgba[3] > 0)
+					if (pixelPtr->rgba[3] > 0) //if this pixel is not blank, adjust min x/y and actual width/height values
 					{
 						minX = std::min(minX, x);
 						minY = std::min(minY, y);
@@ -241,28 +267,27 @@ namespace PinEngine
 				}
 			}
 
-			if (actualWidth <= 0 || actualHeight <= 0)
+			if (actualWidth <= 0 || actualHeight <= 0) //If there were no pixels for this character (ex. space), use the "character width" from gdi plus, so that when we generate the characters in the text, there will be a space for this glyph.
 			{
 				actualHeight = 0;
-				actualWidth = charWidth;
+				actualWidth = characterWidthFromGDIPlus;
 				minY = 0;
 				minX = 0;
 			}
-			else
+			else //If the character was not blank, adjust the width/height by +=1. 
 			{
-				if (minX > 0) minX -= 1;
-				if (minY > 0) minY -= 1;
-				actualWidth += 2;
-				actualHeight += 2;
+				actualWidth += 1;
+				actualHeight += 1;
 			}
 			glyphBitmap->UnlockBits(&bitmapData);
 			ParseGlyph glyph;
-			glyph.bitmap = std::unique_ptr<Gdiplus::Bitmap>(glyphBitmap);
+			glyph.bitmap = std::unique_ptr<Gdiplus::Bitmap>(glyphBitmap); //When the ParseGlyph is destroyed, this should clean up the memory allocated for the glyph bitmap from Clone I think? Should probably verify this later
 			glyph.character = character;
 			glyph.charHeight = actualHeight;
 			glyph.charWidth = actualWidth;
 			glyph.xOffset = minX;
 			glyph.yOffset = minY;
+			glyph.suggestedCharWidth = characterWidthFromGDIPlus;
 			return glyph;
 		}
 

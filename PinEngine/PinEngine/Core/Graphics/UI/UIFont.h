@@ -17,7 +17,7 @@ namespace PinEngine
 				uint32_t Character;
 				RECT Subrect;
 				float YOffset;
-				float XAdvance;
+				float XAdvance; //Currently ignoring this, ||
 			};
 			std::shared_ptr<Texture> texture = nullptr;
 			FontGlyph * FindGlyph(wchar_t character);

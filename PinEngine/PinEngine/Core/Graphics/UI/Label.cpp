@@ -97,15 +97,17 @@ void PinEngine::UI::Label::SetColor(Color color)
 
 void Label::RenderOverride(DirectX::FXMMATRIX cameraMatrix)
 {
-	auto cb_wvp = PipelineManager::GetCameraConstantBuffer();
-	cb_wvp->data = worldMatrix * cameraMatrix;
-	cb_wvp->ApplyChanges();
-	PipelineManager::SetPipelineState(pipelineState);
-	deviceContext->PSSetShaderResources(0, 1, font->texture->GetTextureResourceViewAddress());
-	UINT offsets = 0;
-	deviceContext->IASetVertexBuffers(0, 1, textVertices.GetAddressOf(), textVertices.StridePtr(), &offsets);
-	deviceContext->Draw(textVertices.VertexCount(), 0);
-
+	if (textVertices.VertexCount() > 0)
+	{
+		auto cb_wvp = PipelineManager::GetCameraConstantBuffer();
+		cb_wvp->data = worldMatrix * cameraMatrix;
+		cb_wvp->ApplyChanges();
+		PipelineManager::SetPipelineState(pipelineState);
+		deviceContext->PSSetShaderResources(0, 1, font->texture->GetTextureResourceViewAddress());
+		UINT offsets = 0;
+		deviceContext->IASetVertexBuffers(0, 1, textVertices.GetAddressOf(), textVertices.StridePtr(), &offsets);
+		deviceContext->Draw(textVertices.VertexCount(), 0);
+	}
 
 	/*deviceContext->IASetVertexBuffers(0, 1, vertexBuffer->GetAddressOf(), vertexBuffer->StridePtr(), &offsets);
 	deviceContext->Draw(vertexBuffer->VertexCount(), 0);*/

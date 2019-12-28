@@ -67,21 +67,28 @@ namespace PinEngine
 			storage = data;
 			vertexCount = static_cast<UINT>(data.size());
 
-			D3D11_BUFFER_DESC vertexBufferDesc;
-			ZeroMemory(&vertexBufferDesc, sizeof(vertexBufferDesc));
+			if (data.size() == 0) //if empty buffer 
+			{
+				return E_FAIL;
+			}
+			else
+			{
+				D3D11_BUFFER_DESC vertexBufferDesc;
+				ZeroMemory(&vertexBufferDesc, sizeof(vertexBufferDesc));
 
-			vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-			vertexBufferDesc.ByteWidth = stride * vertexCount;
-			vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-			vertexBufferDesc.CPUAccessFlags = 0;
-			vertexBufferDesc.MiscFlags = 0;
+				vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+				vertexBufferDesc.ByteWidth = stride * vertexCount;
+				vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+				vertexBufferDesc.CPUAccessFlags = 0;
+				vertexBufferDesc.MiscFlags = 0;
 
-			D3D11_SUBRESOURCE_DATA vertexBufferData;
-			ZeroMemory(&vertexBufferData, sizeof(vertexBufferData));
-			vertexBufferData.pSysMem = data.data();
+				D3D11_SUBRESOURCE_DATA vertexBufferData;
+				ZeroMemory(&vertexBufferData, sizeof(vertexBufferData));
+				vertexBufferData.pSysMem = data.data();
 
-			HRESULT hr = device->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &buffer);
-			return hr;
+				HRESULT hr = device->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &buffer);
+				return hr;
+			}
 		}
 	};
 }

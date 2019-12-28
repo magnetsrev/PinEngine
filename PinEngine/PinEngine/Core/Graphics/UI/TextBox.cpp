@@ -12,9 +12,17 @@ namespace PinEngine
 			switch (ch)
 			{
 			case 0x8: //backspace
-				if (text.size() > 0)
+				if (text.size() > 0) //This is rigged up, but pretty much we're not going to allow multicolored text codes with pipes in textboxes for now. Will come back to this later.
 				{
-					text = text.substr(0, text.size() - 1);
+					auto lastCharIndex = text.size() - 1;
+					if (text[lastCharIndex] == '|')
+					{
+						text = text.substr(0, text.size() - 2);
+					}
+					else
+					{
+						text = text.substr(0, text.size() - 1);
+					}
 					label->SetText(text);
 				}
 				break;
@@ -23,6 +31,12 @@ namespace PinEngine
 			case 0x16: //Paste
 				break;
 			case 0x18: //Cut
+				break;
+			case 0x1B: //Escape
+				break;
+			case '|':
+				text += L"||";
+				label->SetText(text);
 				break;
 			default:
 				text += ch;

@@ -30,6 +30,7 @@ namespace PinEngine
 			public:
 				std::unique_ptr<Gdiplus::Bitmap> bitmap = nullptr;
 				int charWidth = 0;
+				int suggestedCharWidth = 0;
 				int charHeight = 0;
 				int xOffset = 0;
 				int yOffset = 0;
