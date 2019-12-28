@@ -1,0 +1,19 @@
+Todo List:
+
+Status: In Progress
+1. Implement Textbox UI Widget
+---- [In Progress] Implement Textbox Border Drawing
+---- [TODO] Implement Text rendering cutoff within border boundaries
+---- [TODO] Add text caret for current position // allow moving with arrow keys
+---- [TODO] Add things like cut, copy, paste functionality
+---- [TODO] Allow scrolling for text that surpasses textbox boundaries
+---- [TODO] Allow for mouse interaction with text / highlighting
+
+2. Implement Button Widget
+---- [TODO] Add Text Label for Button
+---- [TODO] Add Border Color Customization
+---- [TODO] Add Fill Color
+---- [TODO] Add MouseOver Fill Color
+---- [TODO] Add sound to play when button selected
+
+3. Begin 3D Implementation

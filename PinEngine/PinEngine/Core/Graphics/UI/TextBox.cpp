@@ -59,7 +59,7 @@ namespace PinEngine
 		{
 			widgetType = WidgetType::TextBox;
 			label = std::make_shared<Label>();
-			label->Initialize(AnchorPoint::Center, this);
+			label->Initialize(AnchorPoint::TopLeft, this);
 			label->SetFont(FontManager::GetFont(L"Times New Roman", 16));
 			label->SetText(L"Temporary");
 			AddChild(label);

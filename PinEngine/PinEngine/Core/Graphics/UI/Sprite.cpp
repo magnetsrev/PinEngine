@@ -37,6 +37,11 @@ void Sprite::AssignTexture(wstring path)
 	}
 }
 
+void PinEngine::UI::Sprite::AssignTexture(std::shared_ptr<Texture> texture)
+{
+	this->texture = texture;
+}
+
 void Sprite::RenderOverride(DirectX::FXMMATRIX cameraMatrix)
 {
 	auto cb_wvp = PipelineManager::GetCameraConstantBuffer();

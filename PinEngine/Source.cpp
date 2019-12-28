@@ -12,8 +12,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	WindowStyle style = (WindowStyle)(WindowStyle::ExitButton | WindowStyle::Resizable);
 	if (window.Initialize(hInstance, L"Test Title", L"Test Class", 800, 600, -1, -1, style))
 	{
-		
 		//bool result = window.SetWindowColorKey(RGB(0, 0, 0));
+		window.ToggleClickthrough(true);
 
 		window.renderer.SetActiveScene(SceneGenerator::GenerateTestScene());
 

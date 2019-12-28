@@ -16,16 +16,15 @@ shared_ptr<Scene> SceneGenerator::GenerateTestScene()
 
 
 	std::shared_ptr<TextBox> tb = std::make_shared<TextBox>();
-	tb->Initialize(AnchorPoint::Center);
+	tb->Initialize(AnchorPoint::TopRight, nullptr, AnchorPoint::Center);
+	tb->SetText(L"Test");
 	scene->AddWidget(tb);
 
-
 	auto font = FontManager::GetFont(L"Times New Roman", 16);
-	ResourceManager::RegisterResource(L"spritesheet", font->texture);
 	std::shared_ptr<Sprite> spritesheet = std::make_shared<Sprite>();
 	spritesheet->Initialize(AnchorPoint::TopLeft);
 	spritesheet->SetDimensions(font->textureWidth, font->textureHeight);
-	spritesheet->AssignTexture(L"spritesheet");
+	spritesheet->AssignTexture(font->texture);
 	scene->AddWidget(spritesheet);
 
 	return scene;

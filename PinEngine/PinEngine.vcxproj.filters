@@ -316,4 +316,9 @@
       <Filter>Header Files\PinEngine\Core\Graphics</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="workflow.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+  </ItemGroup>
 </Project>
