@@ -16,7 +16,6 @@ namespace PinEngine
 			{
 				uint32_t Character;
 				RECT Subrect;
-				float XOffset;
 				float YOffset;
 				float XAdvance;
 			};

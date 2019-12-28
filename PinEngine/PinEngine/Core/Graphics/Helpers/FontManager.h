@@ -11,8 +11,7 @@ namespace Gdiplus
 #include <objidl.h>
 #include <gdiplus.h>
 #include <vector>
-#include <memory>
-#include <unordered_map>
+#include "HashPair.h"
 #include "..//UI//UIFont.h"
 
 namespace PinEngine
@@ -40,17 +39,8 @@ namespace PinEngine
 			};
 			static std::shared_ptr<UIFont> GenerateFont(std::wstring fontAlias, float fontPoint);
 			static ParseGlyph GenerateGlyphFromCharacter(wchar_t character, Gdiplus::Graphics* gfx, Gdiplus::Bitmap* bitmap, Gdiplus::Font* font, Gdiplus::Brush* brush);
-			struct hash_pair 
-			{
-				template <class T1, class T2>
-				size_t operator()(const std::pair<T1, T2>& p) const
-				{
-					auto hash1 = std::hash<T1>{}(p.first);
-					auto hash2 = std::hash<T2>{}(p.second);
-					return hash1 ^ hash2;
-				}
-			};
-			static std::unordered_map<std::pair<std::wstring, float>, std::shared_ptr<UIFont>, hash_pair> fonts;
+			
+			static std::unordered_map<std::pair<std::wstring, float>, std::shared_ptr<UIFont>, HashPair> fonts;
 			static bool initialized;
 		};
 	}

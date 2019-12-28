@@ -118,9 +118,10 @@ bool PipelineStateGenerator::BuildPipelineStates(ComPtr<ID3D11Device> device)
 
 		//Create sampler description for sampler state
 		CD3D11_SAMPLER_DESC sampDesc(D3D11_DEFAULT);
-		sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-		sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-		sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+		sampDesc.Filter = D3D11_FILTER_MIN_MAG_LINEAR_MIP_POINT;
+		sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+		sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+		sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
 
 		hr = device->CreateSamplerState(&sampDesc, &state_default_2d_text->samplerState); //Create sampler state
 		COM_ERROR_IF_FAILED(hr, L"Failed to create sampler state.");

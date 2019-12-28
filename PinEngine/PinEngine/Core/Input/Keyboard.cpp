@@ -35,7 +35,7 @@ namespace PinEngine
 		}
 	}
 
-	unsigned char Keyboard::ReadChar()
+	wchar_t Keyboard::ReadChar()
 	{
 		if (charBuffer.empty()) //If no keys to be read?
 		{
@@ -43,7 +43,7 @@ namespace PinEngine
 		}
 		else
 		{
-			unsigned char e = charBuffer.front(); //Get first char from queue
+			wchar_t e = charBuffer.front(); //Get first char from queue
 			charBuffer.pop(); //Remove first char from queue
 			return e; //Returns char
 		}
@@ -61,9 +61,9 @@ namespace PinEngine
 		keyBuffer.push(KeyboardEvent(KeyboardEvent::EventType::Release, key));
 	}
 
-	void Keyboard::OnChar(const unsigned char key)
+	void Keyboard::OnChar(const wchar_t ch)
 	{
-		charBuffer.push(key);
+		charBuffer.push(ch);
 	}
 
 	void Keyboard::EnableAutoRepeatKeys()

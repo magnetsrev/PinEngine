@@ -252,7 +252,7 @@ namespace PinEngine
 		}
 		case WM_CHAR:
 		{
-			unsigned char ch = static_cast<unsigned char>(wParam);
+			wchar_t ch = static_cast<wchar_t>(wParam);
 			if (keyboard->IsCharsAutoRepeat())
 			{
 				keyboard->OnChar(ch);
@@ -409,7 +409,15 @@ namespace PinEngine
 		}
 		while (!keyboard->CharBufferIsEmpty())
 		{
-			unsigned char ch = keyboard->ReadChar();
+			std::shared_ptr<Scene> scene = renderer.GetActiveScene();
+			wchar_t ch = keyboard->ReadChar();
+			if (scene)
+			{
+				for (const auto& widget : scene->GetWidgets())
+				{
+					widget->ProcessChar(ch);
+				}
+			}
 		}
 
 		if (GetAsyncKeyState('A'))

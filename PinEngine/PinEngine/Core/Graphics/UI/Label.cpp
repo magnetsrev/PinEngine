@@ -235,9 +235,6 @@ inline void Label::ForEachGlyph(wchar_t const* text, TAction action)
 			// Output this character.
 			auto glyph = font->FindGlyph(character);
 
-			if (x>0)
-				x += glyph->XOffset;
-
 			if (x < 0)
 				x = 0;
 

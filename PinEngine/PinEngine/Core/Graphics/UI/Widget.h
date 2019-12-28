@@ -6,6 +6,7 @@
 #include "WidgetType.h"
 #include "..//..//Event.h"
 #include "..//..//Input//MouseEvent.h"
+#include "..//..//Input//KeyboardEvent.h"
 #include <memory>
 #include <vector>
 #include <d3d11.h>
@@ -26,6 +27,7 @@ namespace PinEngine
 			bool HasChild(std::shared_ptr<Widget> child);
 			void SetDimensions(float width, float height);
 			void ProcessMouseEvent(MouseEvent mouseEvent);
+			virtual void ProcessChar(wchar_t ch);
 			void ToggleMouseInteraction(bool isEnabled);
 			bool IsMouseOver();
 			bool IsClicked();

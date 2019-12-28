@@ -79,7 +79,7 @@ void Widget::SetDimensions(float width, float height)
 
 void Widget::RenderOverride(FXMMATRIX cameraMatrix)
 {
-	assert("RenderOverride must be overridden." && 0);
+	//assert("RenderOverride must be overridden." && 0);
 }
 
 void Widget::OnInitialize()
@@ -200,6 +200,11 @@ void Widget::ProcessMouseEvent(MouseEvent mouseEvent)
 		break;
 	}
 	}
+}
+
+void PinEngine::UI::Widget::ProcessChar(wchar_t ch)
+{
+	//This can be overridden if a particular widget should be able to accept keyboard input (ex. textbox)
 }
 
 void Widget::ToggleMouseInteraction(bool isEnabled)

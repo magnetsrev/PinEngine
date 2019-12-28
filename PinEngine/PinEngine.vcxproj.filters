@@ -153,11 +153,11 @@
     <ClCompile Include="PinEngine\Core\Graphics\Helpers\BC4TextureGenerator.cpp">
       <Filter>Source Files\PinEngine\Core\Graphics\Helpers</Filter>
     </ClCompile>
-    <ClCompile Include="PinEngine\Core\Graphics\Helpers\SpritesheetGenerator.cpp">
-      <Filter>Source Files\PinEngine\Core\Graphics\Helpers</Filter>
-    </ClCompile>
     <ClCompile Include="PinEngine\Core\Graphics\Helpers\FontManager.cpp">
       <Filter>Source Files\PinEngine\Core\Graphics\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="PinEngine\Core\Graphics\UI\TextBox.cpp">
+      <Filter>Source Files\PinEngine\Core\Graphics\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -284,10 +284,10 @@
     <ClInclude Include="PinEngine\Core\Graphics\Helpers\BC4TextureGenerator.h">
       <Filter>Header Files\PinEngine\Core\Graphics\Helpers</Filter>
     </ClInclude>
-    <ClInclude Include="PinEngine\Core\Graphics\Helpers\SpritesheetGenerator.h">
+    <ClInclude Include="PinEngine\Core\Graphics\Helpers\FontManager.h">
       <Filter>Header Files\PinEngine\Core\Graphics\Helpers</Filter>
     </ClInclude>
-    <ClInclude Include="PinEngine\Core\Graphics\Helpers\FontManager.h">
+    <ClInclude Include="PinEngine\Core\Graphics\Helpers\HashPair.h">
       <Filter>Header Files\PinEngine\Core\Graphics\Helpers</Filter>
     </ClInclude>
   </ItemGroup>

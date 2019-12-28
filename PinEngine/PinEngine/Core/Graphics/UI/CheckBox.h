@@ -12,7 +12,6 @@ namespace PinEngine
 			void SetText(std::wstring text);
 			void SetTextColor(Color color);
 			void SetFont(std::shared_ptr<UIFont> font);
-			void RenderOverride(DirectX::FXMMATRIX cameraMatrix) override;
 			bool IsChecked() const;
 			void ToggleCheck();
 			Event<CheckBox> OnChecked;

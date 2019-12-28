@@ -13,7 +13,7 @@ namespace PinEngine
 		bool KeyBufferIsEmpty();
 		bool CharBufferIsEmpty();
 		KeyboardEvent ReadKey();
-		unsigned char ReadChar();
+		wchar_t ReadChar();
 		
 		void EnableAutoRepeatKeys();
 		void DisableAutoRepeatKeys();
@@ -24,12 +24,12 @@ namespace PinEngine
 	private:
 		void OnKeyPressed(const unsigned char key);
 		void OnKeyReleased(const unsigned char key);
-		void OnChar(const unsigned char key);
+		void OnChar(const wchar_t ch);
 
 		bool autoRepeatKeys = false;
-		bool autoRepeatChars = false;
+		bool autoRepeatChars = true;
 		bool keyStates[256] = { false };
 		std::queue<KeyboardEvent> keyBuffer;
-		std::queue<unsigned char> charBuffer;
+		std::queue<wchar_t> charBuffer;
 	};
 }

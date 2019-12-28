@@ -13,6 +13,7 @@ namespace PinEngine
 
 		FontManager::FontManager()
 		{
+			//GDIPlus Initialization
 			initialized = true;
 			Gdiplus::GdiplusStartupInput gdiplusStartupInput;
 			ULONG_PTR           gdiplusToken;
@@ -21,6 +22,7 @@ namespace PinEngine
 
 		std::shared_ptr<UIFont> FontManager::GetFont(std::wstring fontAlias, float fontPoint)
 		{
+			fontPoint = ceilf(fontPoint); //round up font point
 			auto iterator = FontManager::fonts.find(std::pair<std::wstring, float>(fontAlias, fontPoint));
 			if (iterator != FontManager::fonts.end())
 			{
@@ -35,7 +37,6 @@ namespace PinEngine
 
 		std::shared_ptr<UIFont> FontManager::GenerateFont(std::wstring fontAlias, float fontPoint)
 		{
-			std::shared_ptr<UIFont> generatedFont = std::make_shared<UIFont>();
 
 			std::unique_ptr<Gdiplus::FontFamily> fontFamily = std::make_unique<Gdiplus::FontFamily>(fontAlias.c_str());
 			std::unique_ptr<Gdiplus::Font> font = std::make_unique<Gdiplus::Font>(fontFamily.get(), PointsToPixels(fontPoint), Gdiplus::FontStyleRegular, Gdiplus::UnitPixel);
@@ -50,6 +51,7 @@ namespace PinEngine
 					abort();
 				}
 			}
+			std::shared_ptr<UIFont> generatedFont = std::make_shared<UIFont>();
 
 			
 			int pixelSize = PointsToPixels(fontPoint) * 4 / 3;
@@ -173,15 +175,15 @@ namespace PinEngine
 			{
 				UIFont::FontGlyph glyph;
 				glyph.Character = g.character;
-				RECT area;
-				area.left = g.drawOffsetX;
-				area.top = g.drawOffsetY;
-				area.bottom = g.drawOffsetY + g.charHeight;
-				area.right = g.drawOffsetX + g.charWidth;
-				glyph.Subrect = area;
+
+				//Calculate the subrect for the glyph
+				glyph.Subrect.left = g.drawOffsetX;
+				glyph.Subrect.top = g.drawOffsetY;
+				glyph.Subrect.bottom = g.drawOffsetY + g.charHeight;
+				glyph.Subrect.right = g.drawOffsetX + g.charWidth;
+
 				glyph.YOffset = g.yOffset;
 				glyph.XAdvance = 0;
-				glyph.XOffset = 0;
 				generatedFont->glyphs.push_back(glyph);
 			}
 			generatedFont->lineSpacing = lineSpacing;
@@ -264,11 +266,12 @@ namespace PinEngine
 			return glyph;
 		}
 
+		//Static Members
 		bool FontManager::initialized = false;
-		std::unordered_map<std::pair<std::wstring, float>, std::shared_ptr<UIFont>, FontManager::hash_pair> FontManager::fonts;
+		std::unordered_map<std::pair<std::wstring, float>, std::shared_ptr<UIFont>, HashPair> FontManager::fonts;
 		namespace priv
 		{
-			FontManager fg;
+			FontManager fg; //FontManager singleton
 		}
 	}
 }

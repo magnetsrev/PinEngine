@@ -8,7 +8,8 @@ namespace PinEngine
 			Unknown,
 			Sprite,
 			Label,
-			CheckBox
+			CheckBox,
+			TextBox
 		};
 	}
 }

@@ -4,10 +4,6 @@ using namespace PinEngine;
 using namespace PinEngine::UI;
 using namespace std;
 
-void PinEngine::UI::CheckBox::RenderOverride(DirectX::FXMMATRIX cameraMatrix)
-{
-}
-
 bool PinEngine::UI::CheckBox::IsChecked() const
 {
 	return isChecked;

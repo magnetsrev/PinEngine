@@ -161,8 +161,8 @@
   <ItemGroup>
     <ClCompile Include="PinEngine\Core\Graphics\Helpers\BC4TextureGenerator.cpp" />
     <ClCompile Include="PinEngine\Core\Graphics\Helpers\FontManager.cpp" />
-    <ClCompile Include="PinEngine\Core\Graphics\Helpers\SpritesheetGenerator.cpp" />
     <ClCompile Include="PinEngine\Core\Graphics\UI\CheckBox.cpp" />
+    <ClCompile Include="PinEngine\Core\Graphics\UI\TextBox.cpp" />
     <ClCompile Include="PinEngine\Core\Graphics\UI\UIFont.cpp" />
     <ClCompile Include="PinEngine\Core\Graphics\Color.cpp" />
     <ClCompile Include="PinEngine\Common\ErrorLogger.cpp" />
@@ -191,9 +191,9 @@
     <ClCompile Include="PinEngine\Core\Graphics\UI\Widget.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="PinEngine\Core\Graphics\Helpers\HashPair.h" />
     <ClInclude Include="PinEngine\Core\Graphics\Helpers\BC4TextureGenerator.h" />
     <ClInclude Include="PinEngine\Core\Graphics\Helpers\FontManager.h" />
-    <ClInclude Include="PinEngine\Core\Graphics\Helpers\SpritesheetGenerator.h" />
     <ClInclude Include="PinEngine\Core\Graphics\UI\CheckBox.h" />
     <ClInclude Include="PinEngine\Core\Graphics\UI\UIFont.h" />
     <ClInclude Include="PinEngine\Core\Graphics\UI\Label.h" />
