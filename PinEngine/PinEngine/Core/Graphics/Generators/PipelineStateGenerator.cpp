@@ -96,6 +96,52 @@ bool PipelineStateGenerator::BuildPipelineStates(ComPtr<ID3D11Device> device)
 	}
 
 	{
+		std::shared_ptr<PipelineState> state_2d_color = std::make_shared<PipelineState>("2d_color");
+		//Create depth stencil state
+		CD3D11_DEPTH_STENCIL_DESC depthStencilDesc(D3D11_DEFAULT);
+		depthStencilDesc.DepthFunc = D3D11_COMPARISON_FUNC::D3D11_COMPARISON_LESS_EQUAL;
+
+		HRESULT hr = device->CreateDepthStencilState(&depthStencilDesc, &state_2d_color->depthStencilState);
+		state_2d_color->stencilRef = 0;
+		COM_ERROR_IF_FAILED(hr, L"Failed to create depth stencil state.");
+
+
+		//Create Rasterizer State
+		CD3D11_RASTERIZER_DESC rasterizerDesc(D3D11_DEFAULT);
+		rasterizerDesc.MultisampleEnable = TRUE; //JMP
+		rasterizerDesc.AntialiasedLineEnable = TRUE; //JMP
+		//rasterizerDesc.CullMode = D3D11_CULL_NONE;
+		hr = device->CreateRasterizerState(&rasterizerDesc, &state_2d_color->rasterizerState);
+		COM_ERROR_IF_FAILED(hr, L"Failed to create rasterizer state.");
+
+
+		//Create sampler description for sampler state
+		CD3D11_SAMPLER_DESC sampDesc(D3D11_DEFAULT);
+		sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
+		sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+		sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+		sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+		hr = device->CreateSamplerState(&sampDesc, &state_2d_color->samplerState); //Create sampler state
+		COM_ERROR_IF_FAILED(hr, L"Failed to create sampler state.");
+
+		std::vector<D3D11_INPUT_ELEMENT_DESC> inputLayout =
+		{
+			{"POSITION", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0  },
+			{"COLOR", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0  }
+		};
+
+		state_2d_color->vertexShader = std::make_shared<VertexShader>();
+		state_2d_color->pixelShader = std::make_shared<PixelShader>();
+
+		if (!state_2d_color->vertexShader->Initialize(device, shaderfolder + L"vs_2d_color.cso", inputLayout))
+			return false;
+		if (!state_2d_color->pixelShader->Initialize(device, shaderfolder + L"ps_2d_color.cso"))
+			return false;
+
+		ResourceManager::RegisterResource(L"2d_color", state_2d_color);
+	}
+
+	{
 		std::shared_ptr<PipelineState> state_default_2d_text = std::make_shared<PipelineState>("default_2d_text");
 		//Create depth stencil state
 		CD3D11_DEPTH_STENCIL_DESC depthStencilDesc(D3D11_DEFAULT);

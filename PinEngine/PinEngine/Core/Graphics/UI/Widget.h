@@ -43,6 +43,7 @@ namespace PinEngine
 			virtual void RenderOverride(DirectX::FXMMATRIX cameraMatrix);
 
 			virtual void OnInitialize(); //This will be called after default initialize runs for classes inheriting widget
+			virtual void OnResize(); //This will be called when the widget's width or height is modified
 			void UpdateMatrix() override;
 			WidgetType widgetType = WidgetType::Unknown;
 			ID3D11DeviceContext* deviceContext = nullptr;

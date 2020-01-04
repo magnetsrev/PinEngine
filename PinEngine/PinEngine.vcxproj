@@ -72,23 +72,23 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>$(SolutionDir)DirectXTK\Libs\Debug;$(SolutionDir)Assimp\Libs;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)DirectXTK\Inc;$(SolutionDir)Assimp\Inc;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)DirectXTK\Libs\Debug;$(SolutionDir)Assimp\Libs;$(SolutionDir)Ultralight\Libs;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)DirectXTK\Inc;$(SolutionDir)Assimp\Inc;$(SolutionDir)Ultralight\Inc;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)DirectXTK\Inc;$(SolutionDir)Assimp\Inc;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)DirectXTK\Libs\Debug;$(SolutionDir)Assimp\Libs;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)DirectXTK\Inc;$(SolutionDir)Assimp\Inc;$(SolutionDir)Ultralight\Inc;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)DirectXTK\Libs\Debug;$(SolutionDir)Assimp\Libs;$(SolutionDir)Ultralight\Libs;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)DirectXTK\Inc;$(SolutionDir)Assimp\Inc;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)DirectXTK\Libs\Release;$(SolutionDir)Assimp\Libs;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)DirectXTK\Inc;$(SolutionDir)Assimp\Inc;$(SolutionDir)Ultralight\Inc;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)DirectXTK\Libs\Release;$(SolutionDir)Assimp\Libs;$(SolutionDir)Ultralight\Libs;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)DirectXTK\Inc;$(SolutionDir)Assimp\Inc;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)DirectXTK\Libs\Release;$(SolutionDir)Assimp\Libs;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)DirectXTK\Inc;$(SolutionDir)Assimp\Inc;$(SolutionDir)Ultralight\Inc;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)DirectXTK\Libs\Release;$(SolutionDir)Assimp\Libs;$(SolutionDir)Ultralight\Libs;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -246,6 +246,16 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
+    <FxCompile Include="ps_2d_color.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
     <FxCompile Include="ps_2d_text.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
@@ -277,6 +287,16 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="vs_2d.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="vs_2d_color.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>

@@ -17,6 +17,8 @@ namespace PinEngine
 			void SetFontSize(float fontSize);
 			void SetColor(Color color);
 			void RenderOverride(DirectX::FXMMATRIX cameraMatrix) override;
+			UIFont* GetFont();
+			float GetFontSize();
 		protected:
 			void OnInitialize() override;
 		private:

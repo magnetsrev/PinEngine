@@ -74,6 +74,7 @@ void Widget::SetDimensions(float width, float height)
 {
 	dimensions.x = width;
 	dimensions.y = height;
+	OnResize();
 	UpdateMatrix();
 }
 
@@ -85,6 +86,10 @@ void Widget::RenderOverride(FXMMATRIX cameraMatrix)
 void Widget::OnInitialize()
 {
 	assert("OnInitialize should be overridden with a function to initialize the custom widgetType." && 0);
+}
+
+void PinEngine::UI::Widget::OnResize()
+{
 }
 
 void Widget::Render(FXMMATRIX cameraMatrix)

@@ -310,6 +310,12 @@
     <FxCompile Include="vs_2d_text.hlsl">
       <Filter>Resource Files</Filter>
     </FxCompile>
+    <FxCompile Include="vs_2d_color.hlsl">
+      <Filter>Resource Files</Filter>
+    </FxCompile>
+    <FxCompile Include="ps_2d_color.hlsl">
+      <Filter>Resource Files</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="PinEngine\Core\Graphics\ResourceManager.inl">

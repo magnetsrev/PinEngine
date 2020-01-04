@@ -113,6 +113,16 @@ void Label::RenderOverride(DirectX::FXMMATRIX cameraMatrix)
 	deviceContext->Draw(vertexBuffer->VertexCount(), 0);*/
 }
 
+UIFont* PinEngine::UI::Label::GetFont()
+{
+	return font.get();
+}
+
+float PinEngine::UI::Label::GetFontSize()
+{
+	return fontSize;
+}
+
 void Label::OnInitialize()
 {
 	widgetType = WidgetType::Label;
